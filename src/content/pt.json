@@ -1,0 +1,216 @@
+{
+  "meta": {
+    "title": "Garagem do Brilho — Limpeza de Detalhe Automóvel | Marinha Grande",
+    "description": "Limpeza de detalhe automóvel na Marinha Grande. Lavagem completa, higienização a vapor, descontaminação de pintura e proteção em cera. Recolha e entrega do carro. Marcação online.",
+    "ogAlt": "Garagem do Brilho — limpeza de detalhe automóvel na Marinha Grande"
+  },
+
+  "skipLink": "Saltar para o conteúdo",
+
+  "nav": {
+    "packs": "Serviços",
+    "prices": "Preços",
+    "process": "Como trabalhamos",
+    "work": "Trabalhos",
+    "about": "Sobre",
+    "contact": "Contactos",
+    "book": "Marcar",
+    "menuOpen": "Abrir menu",
+    "menuClose": "Fechar menu"
+  },
+
+  "hero": {
+    "eyebrow": "Marinha Grande · Leiria",
+    "title": "Devolvemos o aspeto de novo ao seu carro.",
+    "lead": "Limpeza de detalhe automóvel, feita sem pressa e com atenção ao pormenor. Não é uma lavagem rápida — é um trabalho demorado, feito à mão.",
+    "ctaPrimary": "Marcar a lavagem",
+    "ctaSecondary": "Ver preços",
+    "scroll": "Ver mais",
+    "pickupStrong": "Recolha e entrega incluídas",
+    "pickup": "Vamos buscar e entregamos o carro, sempre que precisar.",
+    "imgAlt": "Carro após tratamento de detalhe na Garagem do Brilho"
+  },
+
+  "packs": {
+    "eyebrow": "Serviços",
+    "title": "Quatro packs à escolha.",
+    "lead": "Do essencial ao tratamento completo de pintura. O preço varia com o tamanho do carro — escolha o tipo abaixo e os valores acompanham.",
+    "featuredLabel": "Mais escolhido",
+    "includesLabel": "Inclui",
+    "durationLabel": "Duração",
+    "fromLabel": "Preço para",
+    "cta": "Marcar este pack",
+    "moreLabel": "mais"
+  },
+
+  "pricing": {
+    "eyebrow": "Preços",
+    "title": "O tamanho do carro decide o preço.",
+    "lead": "Escolha o tipo de veículo e veja o preço de cada pack. Os valores são os que aqui aparecem.",
+    "selectorLabel": "Tipo de veículo",
+    "selectorHint": "Não tem a certeza? Compare com os exemplos.",
+    "examplesLabel": "Por exemplo",
+    "tableCaption": "Preços por pack para o tipo de veículo selecionado",
+    "colPack": "Pack",
+    "colDuration": "Duração",
+    "colPrice": "Preço",
+    "note": "Valores em euros, IVA incluído. Confirmados na página de marcação.",
+    "cta": "Marcar agora"
+  },
+
+  "extras": {
+    "eyebrow": "Complementos",
+    "title": "Ou escolha só o que precisa.",
+    "lead": "Só precisa do interior? Só do motor? Estes serviços podem ser marcados à parte ou juntos a qualquer pack.",
+    "priceRange": "de {from} a {to}",
+    "priceFixed": "{price}",
+    "cta": "Marcar complementos"
+  },
+
+  "voucher": {
+    "eyebrow": "Voucher",
+    "title": "Três lavagens pagas. A quarta é nossa.",
+    "lead": "Para quem lava o carro com regularidade. O voucher vale quatro sessões, para usar quando quiser.",
+    "before": "Valor normal",
+    "now": "Com voucher",
+    "save": "Poupa {percent}%",
+    "sessions": "4 sessões",
+    "cta": "Comprar voucher",
+    "note": "Disponível na página de marcação, em Vouchers."
+  },
+
+  "process": {
+    "eyebrow": "Como trabalhamos",
+    "title": "Sem pressa, e sem atalhos.",
+    "lead": "A diferença entre uma lavagem e um trabalho de detalhe é o tempo que se dá a cada passo.",
+    "steps": [
+      {
+        "title": "Marca online",
+        "body": "Escolhe o pack, o tamanho do carro e a hora que lhe dá jeito. A agenda é atualizada em tempo real, por isso o horário que vê é o horário que tem."
+      },
+      {
+        "title": "Recebemos o carro",
+        "body": "Traga-o à garagem ou vamos nós buscá-lo — a recolha faz parte do serviço, sempre que precisar. Vê-se o estado real da viatura antes de começar e, se algo precisar de um complemento — motor, estofos, alcatifa — falamos consigo primeiro."
+      },
+      {
+        "title": "Trabalha-se o pormenor",
+        "body": "Exterior, jantes, vidros, vapor no interior. Nas Detalhadas, a pintura é descontaminada e protegida com cera. É a fase longa, e é de propósito."
+      },
+      {
+        "title": "Devolve-se como novo",
+        "body": "O carro sai como devia ter saído do stand. É esse o padrão — e é por isso que uma Detalhada leva oito horas e não quarenta minutos. Se preferir não vir buscá-lo, entregamo-lo onde precisar."
+      }
+    ]
+  },
+
+  "work": {
+    "eyebrow": "Trabalhos",
+    "title": "Da espuma ao brilho.",
+    "lead": "O mesmo carro, no mesmo sítio, com uma lavagem completa pelo meio. Arraste o cursor sobre a foto — e veja o resto no Instagram, é lá que publicamos os trabalhos da semana.",
+    "cta": "Ver no Instagram",
+    "sliderLabel": "Arraste para comparar",
+    "beforeLabel": "Em lavagem",
+    "afterLabel": "Depois",
+    "videoHint": "Toque num vídeo para pausar",
+    "reels": {
+      "reel-espuma": "Espuma ativa — assim começa cada lavagem",
+      "reel-macan": "Porsche Macan — o brilho final",
+      "reel-jante": "Jantes e pinças — o pormenor que se nota"
+    },
+    "placeholder": {
+      "title": "Fotografias a caminho",
+      "body": "As fotos reais dos trabalhos entram aqui assim que chegarem. A estrutura já está pronta — é só colocar os ficheiros em src/assets/img/source e correr npm run images."
+    }
+  },
+
+  "about": {
+    "eyebrow": "Sobre",
+    "title": "Uma garagem. Nenhum carro despachado.",
+    "body": [
+      "A Garagem do Brilho é um espaço de limpeza de detalhe automóvel na Marinha Grande. Não é um túnel de lavagem, nem uma cadeia — é uma garagem onde cada carro é tratado individualmente, do princípio ao fim.",
+      "O foco é sempre o mesmo: o pormenor. Aquilo que se nota num carro bem tratado quase nunca salta à vista — são as calhas dos vidros, os frisos, o interior das jantes, a costura dos bancos. É aí que se põe o tempo."
+    ],
+    "quote": "Devolvemos o aspeto de novo ao seu carro.",
+    "quoteAttrib": "Garagem do Brilho",
+    "ownerLabel": "Quem trata do seu carro",
+    "imgAlt": "fundador da Garagem do Brilho"
+  },
+
+  "faq": {
+    "eyebrow": "Perguntas",
+    "title": "O que costumam perguntar.",
+    "items": [
+      {
+        "q": "Vão buscar e entregar o carro?",
+        "a": "Vamos, sempre que precisar. A recolha e a entrega fazem parte do serviço. Diga-nos o local e a hora que lhe dão jeito, na marcação ou por WhatsApp, e tratamos do resto."
+      },
+      {
+        "q": "Como sei se o meu carro é Citadino, Familiar ou SUV & XL?",
+        "a": "Pelo formato, não pela marca. Citadino são os citadinos e hatchbacks (Fiat 500, Clio, Golf). Familiar são sedans e carrinhas (Série 3, A4, Classe C). SUV & XL cobre SUVs, monovolumes, pickups e tudo o que tenha terceira fila de bancos (XC90, Hilux, X5). Na dúvida, escolha o mais próximo — confirmamos quando recebermos o carro."
+      },
+      {
+        "q": "Qual é a diferença entre a Completa Têxteis e a Completa Peles?",
+        "a": "O interior. A versão Têxteis lava estofos e tapetes em tecido. A versão Peles lava a pele e os tapetes e acrescenta hidratação, que é o passo que impede a pele de ressecar e fissurar com o tempo. Tudo o resto é igual."
+      },
+      {
+        "q": "Quanto tempo fica o carro convosco?",
+        "a": "Depende do pack e do tamanho. Uma Simples são 150 minutos (240 num SUV). Uma Completa vai dos 300 aos 360 minutos. Uma Detalhada ocupa o dia — 480 minutos, em qualquer tamanho. A duração exata aparece na marcação."
+      },
+      {
+        "q": "O que é que a Detalhada tem que as Completas não têm?",
+        "a": "Trabalho de pintura. Além de tudo o que a Completa faz, a Detalhada descontamina a pintura e protege-a com cera. É a diferença entre um carro limpo e um carro que parece novo."
+      },
+      {
+        "q": "Posso juntar complementos a um pack?",
+        "a": "Pode. A lavagem do motor, os estofos e as restantes opções aparecem como complementos na marcação e podem ser adicionados ao pack que escolher — ou marcados isoladamente, em Personalizado."
+      },
+      {
+        "q": "Preciso de marcar antecipadamente?",
+        "a": "Sim. Um trabalho de detalhe ocupa a garagem várias horas, por isso trabalhamos só com marcação. A agenda está online e mostra os horários realmente livres."
+      }
+    ]
+  },
+
+  "cta": {
+    "eyebrow": "Marcar",
+    "title": "Marque quando lhe der jeito.",
+    "lead": "Escolha o pack, escolha a hora. A agenda está aberta.",
+    "primary": "Marcar a lavagem",
+    "secondary": "Ver no Instagram"
+  },
+
+  "contact": {
+    "eyebrow": "Contactos",
+    "title": "Onde nos encontra.",
+    "addressLabel": "Morada",
+    "hoursLabel": "Horário",
+    "hoursUnknown": "Consulte os horários disponíveis na página de marcação.",
+    "closesAt": "Aberto até às {time}",
+    "bookLabel": "Marcação",
+    "bookValue": "Marcação online, em tempo real",
+    "instagramLabel": "Instagram",
+    "facebookLabel": "Facebook",
+    "whatsappLabel": "WhatsApp",
+    "whatsappValue": "Fale connosco diretamente",
+    "pickupLabel": "Recolha e entrega",
+    "pickupValue": "Incluídas, sempre que precisar",
+    "pickupSub": "Combinamos o local e a hora na marcação ou por WhatsApp.",
+    "directions": "Abrir no Google Maps",
+    "areaLabel": "Servimos sobretudo",
+    "areaNote": "Marinha Grande e arredores."
+  },
+
+  "footer": {
+    "tagline": "Especialistas em Limpeza de Detalhe Automóvel",
+    "nav": "Navegação",
+    "contactHeading": "Contactos",
+    "legal": "Todos os direitos reservados.",
+    "credit": "Marcações através da Noona.",
+    "backToTop": "Voltar ao topo"
+  },
+
+  "bar": {
+    "book": "Marcar",
+    "prices": "Preços"
+  }
+}

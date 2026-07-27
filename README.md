@@ -1,0 +1,116 @@
+# Garagem do Brilho — website
+
+Site de página única (pt-PT) para a **Garagem do Brilho**, *Especialistas em Limpeza
+de Detalhe Automóvel* — Marinha Grande, Leiria.
+
+HTML estático. Sem framework, sem dependências de runtime, sem cookies, sem trackers.
+Uma página, ~10KB de JavaScript, e um build que corre em menos de 50ms.
+
+```bash
+npm install     # sharp, apenas em build-time — nada disto chega ao browser
+npm run setup   # fonts, icons, imagens, build
+npm run dev     # build + servidor local em http://localhost:4322
+```
+
+---
+
+## De onde veio o conteúdo
+
+Tudo o que está no site é da própria empresa, retirado da página Noona
+([noona.pt/garagemdobrilho](https://noona.pt/garagemdobrilho)) em julho de 2026:
+
+- **Packs e preços** — os quatro packs (Simples, Completa Têxteis, Completa Peles,
+  Detalhada) nos três escalões (Citadino / Familiar / SUV & XL), com durações e
+  listas de inclusões exatamente como estão na marcação — incluindo as diferenças
+  por escalão (o Simples de SUV é aspiração, o Detalhada Familiar inclui polimento).
+- **Complementos** — Limpeza Interior, Lavagem Exterior, Estofos, Lavagem do Motor.
+- **Voucher** — 3 Lavagens + 1 Grátis (4 sessões, 100€ → 75€).
+- **Posicionamento** — "Atenção ao pormenor", "Qualidade Premium", "Spa Day",
+  "Devolvemos o aspeto de novo ao seu carro" são frases deles, não nossas.
+- **Morada e "aberto até às 19:00"** — da página Noona.
+- **Fotografias e vídeos** — do álbum Google Photos partilhado pelo cliente
+  ("Coches", julho 2026). Hero, banda CTA, cartões dos packs e o antes/depois são
+  fotos reais (BMW Série 4: empoeirado → espuma → acabado); os três reels da secção
+  Trabalhos são vídeos deles transcodificados (Porsche Macan, espuma, jantes).
+- **Logótipo** — o vetor oficial (Inkscape, Rubik itálico + carro/gota/brilhos) está
+  em `src/assets/brand/`. O `make-icons.js` extrai a marca sem texto para
+  `brand/mark.svg` (viewBox justo, calculado por rasterização+trim) e gera os
+  favicons; o header usa a marca inline com o wordmark em Rubik Bold Italic.
+- **Cores** — a paleta do site é a do logótipo: ciano `#059FD0` como acento
+  (rampa 300–700 validada WCAG AA), marinho profundo nas superfícies.
+
+Se os preços mudarem na Noona, o único ficheiro a tocar é
+`src/content/site.json`. Os textos vivem todos em `src/content/pt.json`.
+
+## O que falta (e o build avisa)
+
+1. **Foto do Daniel** (`source/daniel.jpg`) — a secção Sobre usa o fallback da marca
+   até haver uma foto de quem faz o trabalho. É a foto que mais converte.
+2. **Telefone/WhatsApp** — o site não tem nenhum; confirmar com o cliente.
+3. **Horário semanal completo** — só se sabe "aberto até às 19:00".
+4. **Domínio** — `garagemdobrilho.pt` é assumido; confirmar antes de publicar.
+5. **NIF e coordenadas GPS** — enriqueceriam o JSON-LD para pesquisa local.
+6. **Antes/depois enquadrado** — o par atual é honesto (mesmo carro, mesma entrada)
+   mas não é shot-for-shot; o CREDITS.md explica como fotografar o próximo.
+
+## Arquitetura
+
+```
+scripts/
+  build.js           gera dist/ (HTML + assets + manifest/sitemap/robots/_headers)
+  serve.js           servidor estático local com suporte a Range
+  fetch-fonts.js     auto-hospeda Space Grotesk + Inter + Rubik itálico (RGPD)
+  process-images.js  AVIF/WebP responsivos + LQIP; tolera fotos em falta
+  make-video.js      transcodifica os Reels (ffmpeg): loops mudos 720p + posters
+  make-icons.js      extrai a marca do vetor oficial e gera os favicons
+  check-contrast.js  auditoria WCAG AA da paleta — falha o exit code se falhar um par
+src/
+  assets/brand/      vetores oficiais do logótipo + mark.svg extraída
+  content/site.json  dados: packs, preços, escalões, extras, voucher, contactos
+  content/pt.json    todo o texto visível
+  templates/page.js  o site inteiro como função (conteúdo → HTML)
+  lib/icons.js       ícones SVG inline (Lucide) + a marca oficial
+  assets/css|js      um CSS, um JS — sem build steps, sem minificadores
+```
+
+### Decisões que vale a pena conhecer
+
+- **Escuro por defeito.** Pintura lê-se sobre preto — o produto deste negócio é
+  reflexo, e reflexo precisa de fundo escuro. A FAQ é a única secção clara, marcando
+  a mudança de "ver" para "ler".
+- **Preto-azul-branco** são as cores da marca. A paleta inteira passa WCAG AA nos
+  24 pares declarados (`npm run contrast`).
+- **Serviços e preços numa só secção.** Os cartões dos packs carregam preço,
+  duração, inclusões e CTA — não há tabela separada. O menu tem só "Serviços";
+  o intento "preço" é servido pelo botão do hero e pela barra fixa.
+- **O seletor de veículo** (Citadino/Familiar/SUV & XL) é um grupo de radios nativo
+  que reescreve preços, durações e inclusões dos cartões. Sem JS, a página mostra o
+  escalão Citadino completo — nunca está vazia.
+- **Os vídeos são decorativos e obedecem ao visitante**: loops mudos que só tocam
+  em viewport, nunca com `prefers-reduced-motion`, e um toque pausa — e a pausa
+  é respeitada mesmo ao sair e voltar ao ecrã.
+- **Todos os CTAs apontam para a Noona** (`noona.pt/garagemdobrilho/book`) — o site
+  é a camada de persuasão; a agenda deles continua a ser a fonte de verdade.
+- **Animações**: uma ideia só — *luz a passar sobre uma superfície*. Nada gira nem
+  salta; o negócio vende reflexos, por isso o movimento são reflexos. Inclui parallax
+  do hero, realce que segue o cursor nos cartões, wipe dos títulos, barra de leitura,
+  FAQ animada e brilho na marca e nos botões.
+  - Só `transform`, `opacity` e `clip-path` são animados, e nenhum handler lê layout
+    dentro de um evento de scroll ou pointer (uma medição por frame, partilhada).
+  - `prefers-reduced-motion` desliga **tudo**, incluindo os estados que escondem
+    conteúdo antes de o animar — reduzir movimento nunca pode reduzir conteúdo.
+  - As revelações são **bidirecionais**: um elemento anima ao descer e volta a animar
+    ao subir. Para isso não parecer nervoso são precisas duas coisas. Histerese:
+    revela-se 12% dentro do ecrã (`rootMargin`), mas só se rearma quando o elemento
+    está **completamente** fora dele — medido contra a viewport real e nunca contra
+    `e.rootBounds`, que já vem encolhido pelo `rootMargin` e repunha elementos ainda
+    visíveis. E direção: `--reveal-y` é assinado pelo bordo por onde o elemento saiu,
+    para que algo que regressa de cima desça para o lugar em vez de saltar de baixo.
+  - A classe `.js` é posta no `<head>` para evitar flash, com um temporizador de
+    segurança que a remove se o `main.js` nunca chegar — um script em falta deixa a
+    página visível, não em branco.
+
+## Publicar
+
+`dist/` é o site completo. Netlify, Cloudflare Pages ou qualquer host estático —
+o `_headers` incluído já traz cache imutável para assets e CSP.

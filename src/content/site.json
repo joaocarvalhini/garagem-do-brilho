@@ -1,0 +1,244 @@
+{
+  "site": {
+    "domain": "https://garagemdobrilho.pt",
+    "lang": "pt-PT",
+    "locale": "pt_PT",
+    "themeColor": "#07090D"
+  },
+
+  "company": {
+    "name": "Garagem do Brilho",
+    "tagline": "Especialistas em Limpeza de Detalhe Automóvel",
+    "lockupSub": "Auto Detailing",
+    "owner": "Daniel Cadete",
+    "nif": null,
+    "founded": null
+  },
+
+  "contact": {
+    "booking": "https://noona.pt/garagemdobrilho/book",
+    "profile": "https://noona.pt/garagemdobrilho",
+    "instagram": "https://www.instagram.com/garagemdobrilho_pt/",
+    "instagramHandle": "@garagemdobrilho_pt",
+    "facebook": "https://www.facebook.com/profile.php?id=61586134576022",
+    "phone": "+351960139151",
+    "phoneDisplay": "+351 960 139 151",
+    "whatsapp": "https://wa.me/351960139151",
+    "email": null,
+    "address": {
+      "street": "R. Sociedade Recreativa 1 Maio 205",
+      "postalCode": "2430-177",
+      "locality": "Marinha Grande",
+      "region": "Leiria",
+      "country": "PT",
+      "maps": "https://www.google.com/maps/search/?api=1&query=R.+Sociedade+Recreativa+1+Maio+205%2C+2430-177+Marinha+Grande"
+    },
+    "geo": { "lat": null, "lng": null },
+    "hours": null,
+    "closesAt": "19:00"
+  },
+
+  "serviceArea": [
+    "Marinha Grande",
+    "Leiria",
+    "Vieira de Leiria",
+    "São Pedro de Moel",
+    "Monte Real",
+    "Pataias",
+    "Nazaré"
+  ],
+
+  "vehicles": [
+    {
+      "id": "citadino",
+      "name": "Citadino",
+      "short": "Citadino",
+      "desc": "Carros citadinos e hatchbacks",
+      "examples": "Fiat 500, Renault Clio, VW Golf"
+    },
+    {
+      "id": "familiar",
+      "name": "Familiar",
+      "short": "Familiar",
+      "desc": "Sedans e carrinhas",
+      "examples": "BMW Série 3, Audi A4, Mercedes Classe C"
+    },
+    {
+      "id": "suv",
+      "name": "SUV & XL",
+      "short": "SUV & XL",
+      "desc": "SUVs, monovolumes (MPV), pickups e veículos com 3.ª fila de bancos",
+      "examples": "Volvo XC90, Toyota Hilux, BMW X5"
+    }
+  ],
+
+  "packs": [
+    {
+      "id": "simples",
+      "name": "Simples",
+      "blurb": "O essencial, bem feito. Para manter o carro apresentável entre lavagens completas.",
+      "img": null,
+      "icon": "droplet",
+      "featured": false,
+      "tiers": {
+        "citadino": { "price": 25, "minutes": 150 },
+        "familiar": { "price": 25, "minutes": 150 },
+        "suv": { "price": 35, "minutes": 240 }
+      },
+      "includes": [
+        "Lavagem exterior",
+        "Lavagem jantes",
+        "Limpeza vidros",
+        "Limpeza do interior"
+      ],
+      "includesOverride": {
+        "suv": [
+          "Lavagem exterior",
+          "Lavagem jantes",
+          "Limpeza vidros",
+          "Aspiração interior"
+        ]
+      }
+    },
+    {
+      "id": "completa-texteis",
+      "name": "Lavagem Completa",
+      "variant": "Têxteis",
+      "blurb": "Interior a vapor e estofos lavados a fundo. Para carros com bancos em tecido.",
+      "img": null,
+      "icon": "sparkles",
+      "featured": true,
+      "tiers": {
+        "citadino": { "price": 60, "minutes": 300 },
+        "familiar": { "price": 70, "minutes": 330 },
+        "suv": { "price": 80, "minutes": 360 }
+      },
+      "includes": [
+        "Lavagem exterior",
+        "Lavagem jantes",
+        "Abrilhantador pneus",
+        "Limpeza vidros",
+        "Aspiração interior",
+        "Limpeza a vapor",
+        "Lavagem de estofos e tapetes"
+      ]
+    },
+    {
+      "id": "completa-peles",
+      "name": "Lavagem Completa",
+      "variant": "Peles",
+      "blurb": "O mesmo cuidado, adaptado a pele: lavagem suave e hidratação para não ressecar.",
+      "img": null,
+      "icon": "seat",
+      "featured": false,
+      "tiers": {
+        "citadino": { "price": 65, "minutes": 300 },
+        "familiar": { "price": 75, "minutes": 330 },
+        "suv": { "price": 90, "minutes": 360 }
+      },
+      "includes": [
+        "Lavagem exterior",
+        "Lavagem jantes",
+        "Abrilhantador pneus",
+        "Limpeza vidros",
+        "Aspiração interior",
+        "Limpeza a vapor",
+        "Lavagem das peles e tapetes",
+        "Hidratação das peles"
+      ]
+    },
+    {
+      "id": "detalhada",
+      "name": "Detalhada",
+      "blurb": "Um dia inteiro no carro. Descontaminação da pintura e proteção em cera — é aqui que se devolve o aspeto de novo.",
+      "img": null,
+      "icon": "shieldShine",
+      "featured": false,
+      "tiers": {
+        "citadino": { "price": 130, "minutes": 480 },
+        "familiar": { "price": 150, "minutes": 480 },
+        "suv": { "price": 200, "minutes": 480 }
+      },
+      "includes": [
+        "Lavagem exterior",
+        "Lavagem jantes",
+        "Limpeza vidros",
+        "Aspiração interior",
+        "Limpeza a vapor",
+        "Lavagem das peles e tapetes",
+        "Hidratação das peles",
+        "Abrilhantador pneus",
+        "Descontaminação de pintura",
+        "Proteção cera"
+      ],
+      "includesOverride": {
+        "familiar": [
+          "Lavagem exterior",
+          "Lavagem jantes",
+          "Limpeza vidros",
+          "Aspiração interior",
+          "Limpeza a vapor",
+          "Lavagem das peles e tapetes",
+          "Hidratação das peles",
+          "Abrilhantador pneus",
+          "Descontaminação de pintura",
+          "Polimento (se necessário)",
+          "Proteção cera"
+        ]
+      }
+    }
+  ],
+
+  "extras": [
+    {
+      "id": "interior",
+      "name": "Limpeza Interior",
+      "minutes": 75,
+      "priceFrom": 15,
+      "priceTo": 25,
+      "note": "Aspiração, limpeza tablier, consola central e limpeza dos vidros (XL: 20€)",
+      "icon": "vacuum"
+    },
+    {
+      "id": "exterior",
+      "name": "Lavagem Exterior",
+      "minutes": 60,
+      "priceFrom": 15,
+      "priceTo": 20,
+      "note": "Lavagem exterior com TurtleWax®, jantes e brilho para pneus. (SUV e XL: 18€)",
+      "icon": "droplet"
+    },
+    {
+      "id": "estofos",
+      "name": "Estofos (Bancos e/ou Alcatifa)",
+      "minutes": 120,
+      "priceFrom": 50,
+      "priceTo": 70,
+      "note": "Lavagem e higienização dos estofos. (Valores: Citadino 50€, Sedan 60€, SUV 70€)",
+      "icon": "seat"
+    },
+    {
+      "id": "motor",
+      "name": "Lavagem do Motor",
+      "minutes": 60,
+      "priceFrom": 20,
+      "priceTo": 20,
+      "note": "Lavagem, descontaminação e proteção do compartimento do motor",
+      "icon": "engine"
+    }
+  ],
+
+  "voucher": {
+    "name": "3 Lavagens + 1 Grátis",
+    "kind": "Voucher da série · 4 sessões",
+    "priceBefore": 100,
+    "price": 75,
+    "savePercent": 25
+  },
+
+  "images": {
+    "hero": null,
+    "band": null,
+    "beforeAfter": []
+  }
+}

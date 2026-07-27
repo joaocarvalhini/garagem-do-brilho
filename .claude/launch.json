@@ -1,0 +1,13 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "garagem-do-brilho",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["scripts/serve.js", "--root", "dist"],
+      "cwd": "E:\\garagem-do-brilho",
+      "port": 4322,
+      "autoPort": true
+    }
+  ]
+}

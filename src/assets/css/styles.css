@@ -1,0 +1,2777 @@
+@import url('./fonts.css');
+
+/* ==========================================================================
+   Garagem do Brilho
+   --------------------------------------------------------------------------
+   Black, blue and white — the brand's own three colours, and no fourth.
+
+   The whole page is dark for one reason: paint reads on black. Every reflection,
+   every bit of gloss this business sells is a light source, and light sources only
+   register against something darker. A white detailing site throws away the product.
+   The two sections that go light (prices, FAQ) do it on purpose — they are the
+   sections you read rather than look at, and the switch marks that change of gear.
+   ========================================================================== */
+
+:root {
+  /* ---- colour ---- */
+  /* Never pure #000: it smears on OLED during scroll, and it makes the blue look like
+     it is floating in a hole rather than lying on a surface. */
+  --ink-950: #07090d;
+  --ink-900: #0b0e14;
+  --ink-850: #10141c;
+  --ink-800: #161c26;
+  --ink-700: #222b39;
+
+  --white: #fff;
+  --mist-100: #e6ebf2;
+  --mist-300: #afbbcb;
+
+  /* The logo's own cyan (#059FD0, measured from the vector) anchors the ramp;
+     the logo navy (#053359) informs the dark surfaces rather than living here. */
+  --azul-300: #8ed9f7;
+  --azul-400: #2fb5e8;
+  --azul-500: #059fd0;
+  --azul-600: #047aa3;
+  --azul-700: #035e80;
+
+  --paper: #fff;
+  --paper-alt: #f1f4f9;
+  --ink: #0b0e14;
+  --ink-muted: #4a5768;
+
+  /* Semantic tokens. Components reference these, never the raw ramp above — that is
+     what lets the two light sections invert by resetting six variables. */
+  --bg: var(--ink-950);
+  --bg-alt: var(--ink-900);
+  --surface: var(--ink-850);
+  --surface-2: var(--ink-800);
+  --text: var(--white);
+  --text-body: var(--mist-100);
+  --text-muted: var(--mist-300);
+  --accent: var(--azul-400);
+  --accent-ui: var(--azul-500);
+  --accent-solid: var(--azul-600);
+  --accent-solid-hover: var(--azul-700);
+  --on-accent: var(--white);
+  --line: rgb(255 255 255 / 9%);
+  --line-strong: rgb(255 255 255 / 16%);
+  --ring: var(--azul-400);
+
+  /* ---- type ---- */
+  --font-display: 'Space Grotesk', 'Inter', system-ui, -apple-system, 'Segoe UI', roboto, sans-serif;
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', roboto, sans-serif;
+
+  /* Fluid scale, 375px -> 1440px. clamp() rather than breakpoint jumps so nothing
+     ever lands at an awkward in-between size on a tablet. */
+  --t-xs: 0.75rem;
+  --t-sm: 0.875rem;
+  --t-base: 1rem;
+  --t-lg: clamp(1.0625rem, 0.25vw + 1rem, 1.1875rem);
+  --t-xl: clamp(1.25rem, 0.5vw + 1.1rem, 1.5rem);
+  --t-2xl: clamp(1.5rem, 1vw + 1.25rem, 2rem);
+  --t-3xl: clamp(1.875rem, 2vw + 1.4rem, 2.75rem);
+  --t-4xl: clamp(2.25rem, 3.5vw + 1.4rem, 4rem);
+  --t-5xl: clamp(2.75rem, 5.5vw + 1.2rem, 5.5rem);
+
+  /* ---- space (8pt rhythm) ---- */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+  --s-9: 6rem;
+  --s-10: 8rem;
+
+  /* Two adjacent sections each contribute this, so the visible gap between them is
+     double the value. At 9vw/8rem that was 236px of nothing on a 760px screen — a third
+     of a viewport of dead air between every section. Halved. */
+  --section-y: clamp(2.75rem, 5vw, 4.75rem);
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --container: 75rem;
+  --measure: 60ch;
+
+  /* ---- form ---- */
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+  --r-xl: 24px;
+  --r-full: 999px;
+
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 40%);
+  --shadow-2: 0 8px 24px -8px rgb(0 0 0 / 60%);
+  --shadow-3: 0 24px 60px -16px rgb(0 0 0 / 70%);
+
+  /* ---- motion ---- */
+  /* One easing vocabulary for the whole site. Expo-out is the "arrives and settles"
+     curve — it covers most of its distance immediately, which is what makes an
+     entrance read as confident rather than slow. */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --d-fast: 150ms;
+  --d-mid: 250ms;
+  --d-slow: 400ms;
+
+  --z-base: 1;
+  --z-sticky: 40;
+  --z-header: 50;
+  --z-bar: 60;
+  --z-menu: 100;
+}
+
+/* Light inversion. Only the semantic layer changes. */
+.is-light {
+  --bg: var(--paper);
+  --bg-alt: var(--paper-alt);
+  --surface: var(--paper);
+  --surface-2: var(--paper-alt);
+  --text: var(--ink);
+  --text-body: var(--ink);
+  --text-muted: var(--ink-muted);
+  --accent: var(--azul-700);
+  --accent-ui: var(--azul-600);
+  --line: rgb(11 14 20 / 10%);
+  --line-strong: rgb(11 14 20 / 18%);
+  --shadow-2: 0 8px 24px -8px rgb(11 14 20 / 14%);
+  --shadow-3: 0 24px 60px -16px rgb(11 14 20 / 16%);
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  /* Anchored sections must clear the fixed header or the heading lands underneath it. */
+  scroll-padding-top: 5.5rem;
+}
+
+body {
+  min-height: 100dvh;
+  background: var(--ink-950);
+  color: var(--text-body);
+  font-family: var(--font-sans);
+  font-size: var(--t-base);
+  line-height: 1.6;
+  font-synthesis-weight: none;
+  text-rendering: optimizelegibility;
+  -webkit-font-smoothing: antialiased;
+  /* The price column is the only place digits must not dance as the tier changes, but
+     turning tabular figures on globally costs nothing and keeps every number steady. */
+  font-variant-numeric: tabular-nums;
+  overflow-x: hidden;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:where(h1, h2, h3, h4) {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  text-wrap: balance;
+}
+
+/* Space Grotesk ships no italic and a synthesised oblique looks cheap. Emphasis on
+   this site is colour and weight, never slant. */
+em {
+  font-style: normal;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* One focus treatment everywhere. Never removed — only replaced with something
+   better than the UA default. */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+  border-radius: var(--r-sm);
+}
+
+::selection {
+  background: var(--azul-500);
+  color: #fff;
+}
+
+.skip-link {
+  position: fixed;
+  top: var(--s-3);
+  left: var(--s-3);
+  z-index: 999;
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-md);
+  background: var(--white);
+  color: var(--ink);
+  font-weight: 600;
+  transform: translateY(-150%);
+  transition: transform var(--d-mid) var(--ease-out);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   Layout
+   ========================================================================== */
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  position: relative;
+  padding-block: var(--section-y);
+  background: var(--bg);
+  color: var(--text-body);
+}
+
+.section--alt {
+  background: var(--bg-alt);
+}
+
+.section__head {
+  max-width: 46rem;
+  /* Scales with the viewport like --section-y does, so the heading stays tied to its
+     content instead of floating a fixed 4rem above it on small screens. */
+  margin-bottom: clamp(2rem, 3.5vw, 3rem);
+}
+
+.section__head--center {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-bottom: var(--s-4);
+  color: var(--accent);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 1.75rem;
+  height: 1px;
+  background: currentcolor;
+  opacity: 0.6;
+}
+
+.section__head--center .eyebrow::before {
+  display: none;
+}
+
+.section__title {
+  font-size: var(--t-3xl);
+}
+
+.section__lead {
+  max-width: var(--measure);
+  margin-top: var(--s-4);
+  color: var(--text-muted);
+  font-size: var(--t-lg);
+}
+
+.section__head--center .section__lead {
+  margin-inline: auto;
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  /* 48px tall at the base size — above the 44px floor without measuring. */
+  min-height: 3rem;
+  padding: var(--s-3) var(--s-5);
+  border: 1px solid transparent;
+  border-radius: var(--r-full);
+  font-size: var(--t-sm);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--d-fast) var(--ease-out),
+    border-color var(--d-fast) var(--ease-out),
+    color var(--d-fast) var(--ease-out),
+    transform var(--d-fast) var(--ease-out);
+  /* Kills the 300ms tap delay without disabling pinch-zoom. */
+  touch-action: manipulation;
+}
+
+.btn svg {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex: none;
+  transition: transform var(--d-mid) var(--ease-out);
+}
+
+.btn--primary {
+  background: var(--azul-600);
+  color: #fff;
+}
+
+.btn--primary:hover {
+  background: var(--azul-500);
+}
+
+.btn--primary:active {
+  background: var(--azul-700);
+}
+
+.btn--light {
+  background: var(--white);
+  color: var(--ink-950);
+}
+
+.btn--light:hover {
+  background: var(--mist-100);
+}
+
+.btn--ghost {
+  border-color: var(--line-strong);
+  color: var(--text);
+}
+
+.btn--ghost:hover {
+  border-color: var(--accent-ui);
+  background: rgb(5 159 208 / 10%);
+  color: var(--text);
+}
+
+.btn--lg {
+  min-height: 3.5rem;
+  padding-inline: var(--s-6);
+  font-size: var(--t-base);
+}
+
+.btn--block {
+  width: 100%;
+}
+
+/* Press feedback. Scale only — it never moves a neighbour, so nothing reflows. */
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn--primary:hover svg:last-child,
+.btn--light:hover svg:last-child {
+  transform: translateX(3px);
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+}
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+
+.header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: var(--z-header);
+  transition:
+    background-color var(--d-mid) var(--ease-out),
+    border-color var(--d-mid) var(--ease-out),
+    backdrop-filter var(--d-mid) var(--ease-out);
+  border-bottom: 1px solid transparent;
+  /* Sits over the notch on landscape iPhones without JS. */
+  padding-inline: max(0px, env(safe-area-inset-left));
+}
+
+/* Only frosts once there is something behind it to frost. Over the hero it stays
+   fully transparent — blur with nothing under it is decoration, not signal. */
+.header.is-stuck {
+  background: rgb(7 9 13 / 72%);
+  border-bottom-color: var(--line);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-5);
+  height: 4.5rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  color: var(--white);
+  flex: none;
+}
+
+/* The official mark is wide (car silhouette, ~3.4:1) — size by height and let the
+   width follow. The drop and sparkles are baked-in brand cyan; the car inherits
+   currentColor, so the same mark works on dark and light grounds. */
+.brand svg {
+  height: 2rem;
+  width: auto;
+  flex: none;
+  transition: transform var(--d-slow) var(--ease-out);
+}
+
+.brand:hover svg {
+  transform: translateX(3px);
+}
+
+/* The wordmark matches the vector logo: Rubik Bold Italic, uppercase. Rubik is
+   loaded italic-only and exists solely for this lockup — everything else on the
+   site is Space Grotesk / Inter. */
+.brand__name {
+  font-family: 'Rubik', var(--font-sans);
+  font-style: italic;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.brand__sub {
+  display: block;
+  color: var(--azul-300);
+  font-family: 'Rubik', var(--font-sans);
+  font-style: italic;
+  font-size: 0.5625rem;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+/* On narrow phones the full lockup is wider than the screen minus the burger — it
+   shoved the menu button clean off a 375px viewport once already. Scale the whole
+   lockup down; it returns to full size at 30rem. */
+@media (max-width: 29.999rem) {
+  .brand {
+    gap: var(--s-2);
+  }
+
+  .brand svg {
+    height: 1.625rem;
+  }
+
+  .brand__name {
+    font-size: 0.8125rem;
+  }
+
+  .brand__sub {
+    font-size: 0.5rem;
+    letter-spacing: 0.24em;
+  }
+}
+
+.nav {
+  display: none;
+  align-items: center;
+  gap: var(--s-5);
+}
+
+.nav__link {
+  position: relative;
+  color: var(--mist-300);
+  font-size: var(--t-sm);
+  font-weight: 500;
+  padding-block: var(--s-2);
+  transition: color var(--d-fast) var(--ease-out);
+}
+
+.nav__link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--azul-400);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--d-mid) var(--ease-out);
+}
+
+.nav__link:hover,
+.nav__link.is-active {
+  color: var(--white);
+}
+
+.nav__link:hover::after,
+.nav__link.is-active::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.header__cta {
+  display: none;
+}
+
+.burger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-right: -0.5rem;
+  border-radius: var(--r-md);
+  color: var(--white);
+  transition: background-color var(--d-fast) var(--ease-out);
+}
+
+.burger:hover {
+  background: rgb(255 255 255 / 8%);
+}
+
+.burger svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+@media (min-width: 60rem) {
+  .nav,
+  .header__cta {
+    display: flex;
+  }
+
+  .burger {
+    display: none;
+  }
+}
+
+/* ---- mobile menu ---- */
+
+.menu {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-menu);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: var(--ink-950);
+  padding-bottom: env(safe-area-inset-bottom);
+  /* Not `display:none` — the panel animates, and a display swap can't be transitioned.
+     visibility keeps it out of the tab order and off the screen reader. */
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-1.5rem);
+  transition:
+    opacity var(--d-mid) var(--ease-out),
+    transform var(--d-mid) var(--ease-out),
+    visibility 0s linear var(--d-mid);
+}
+
+.menu.is-open {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0s;
+}
+
+.menu__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 4.5rem;
+}
+
+.menu__nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--s-2);
+  padding-block: var(--s-6);
+}
+
+.menu__link {
+  padding-block: var(--s-3);
+  border-bottom: 1px solid var(--line);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: var(--t-2xl);
+  transition: color var(--d-fast) var(--ease-out);
+  /* Each row is its own stagger step; --i is set inline by the template. */
+  opacity: 0;
+  transform: translateY(0.75rem);
+}
+
+.menu.is-open .menu__link {
+  animation: menu-in var(--d-slow) var(--ease-out) forwards;
+  animation-delay: calc(60ms + var(--i) * 45ms);
+}
+
+.menu__link:hover {
+  color: var(--azul-400);
+}
+
+.menu__foot {
+  padding-block: var(--s-6);
+}
+
+@keyframes menu-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 100svh;
+  padding-top: 8rem;
+  padding-bottom: clamp(3rem, 7vw, 6rem);
+  overflow: hidden;
+  background: var(--ink-950);
+  isolation: isolate;
+}
+
+/* The photograph, when there is one. */
+.hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+
+.hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Fallback for the photo-less state: a slow blue sweep across black, like a light
+   moving over a panel. It is not a placeholder box — if the photo never arrives, this
+   still looks deliberate. */
+.hero__glow {
+  position: absolute;
+  inset: -20%;
+  z-index: -2;
+  background:
+    radial-gradient(45% 45% at 22% 32%, rgb(5 159 208 / 30%) 0%, transparent 70%),
+    radial-gradient(38% 38% at 78% 22%, rgb(47 181 232 / 18%) 0%, transparent 70%),
+    radial-gradient(60% 50% at 50% 92%, rgb(3 94 128 / 24%) 0%, transparent 70%);
+  filter: blur(20px);
+  animation: drift 22s var(--ease-in-out) infinite alternate;
+  will-change: transform;
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+  }
+
+  to {
+    transform: translate3d(2%, 2%, 0) scale(1.08);
+  }
+}
+
+/* Legibility scrim. Sits above the media, below the copy. */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    rgb(7 9 13 / 82%) 0%,
+    rgb(7 9 13 / 45%) 38%,
+    rgb(7 9 13 / 88%) 82%,
+    var(--ink-950) 100%
+  );
+}
+
+/* A single hairline of brand blue along the very bottom of the hero — the "shine". */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--azul-500) 35%, var(--azul-300) 50%, var(--azul-500) 65%, transparent);
+  opacity: 0.7;
+}
+
+.hero__inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.hero__title {
+  max-width: 16ch;
+  font-size: var(--t-5xl);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+
+.hero__title em {
+  color: var(--azul-300);
+}
+
+.hero__lead {
+  max-width: 46ch;
+  margin-top: var(--s-5);
+  color: var(--mist-100);
+  font-size: var(--t-lg);
+}
+
+.hero__actions {
+  margin-top: var(--s-7);
+}
+
+/* The pickup-and-delivery promise, directly under the CTAs. It is an objection-killer,
+   not decoration: the reason people put off booking a full detail is losing half a day
+   to dropping the car off and fetching it back. So it sits in the hero, where the
+   objection forms — but as a quiet chip, not a third button competing with the two
+   above it. */
+.hero__pickup {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  max-width: 34rem;
+  margin-top: var(--s-6);
+  padding: var(--s-4) var(--s-5);
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid rgb(47 181 232 / 38%);
+  border-radius: var(--r-lg);
+  /* Tinted toward the brand blue rather than the neutral white the other chips use.
+     This is the one line on the page that must out-shout its neighbours. */
+  background: linear-gradient(120deg, rgb(47 181 232 / 16%), rgb(47 181 232 / 6%));
+  box-shadow: 0 0 0 1px rgb(47 181 232 / 8%), 0 12px 32px -18px rgb(47 181 232 / 65%);
+  color: var(--mist-100);
+  font-size: var(--t-base);
+  line-height: 1.45;
+  text-align: left;
+}
+
+/* Stacked rather than one running sentence. Inline, the detail wrapped onto a new line
+   starting with a dash on a 375px screen, and the icon ended up floating against the
+   middle of a four-line block. Two lines also give the promise a headline. */
+.hero__pickup-title {
+  display: block;
+  color: #fff;
+  font-size: var(--t-lg);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.hero__pickup-text {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--mist-100);
+  font-size: var(--t-sm);
+}
+
+/* The icon gets a filled disc so it reads as a badge, not as body punctuation. */
+.hero__pickup-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--r-full);
+  background: rgb(47 181 232 / 20%);
+  color: var(--azul-300, var(--accent));
+}
+
+.hero__pickup-icon svg {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+/* The house sheen, but on a timer instead of on hover — the hero is the one place a
+   visitor has not yet reached with the pointer, so a hover-only highlight would never
+   fire exactly where it is needed most. Slow and widely spaced: it should catch the
+   eye on the second pass, not strobe. */
+.hero__pickup::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    120deg,
+    transparent 35%,
+    rgb(142 217 247 / 22%) 50%,
+    transparent 65%
+  );
+  background-size: 260% 100%;
+  background-position: 130% 0;
+  animation: pickup-sheen 6s var(--ease-in-out) 1.6s infinite;
+}
+
+@keyframes pickup-sheen {
+  0% {
+    background-position: 130% 0;
+  }
+
+  /* The sweep itself takes ~18% of the cycle; the rest is deliberate silence. */
+  18%,
+  100% {
+    background-position: -60% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__pickup::after {
+    animation: none;
+  }
+}
+
+.hero__scroll {
+  display: none;
+  position: absolute;
+  right: var(--gutter);
+  bottom: clamp(3rem, 7vw, 6rem);
+  z-index: 2;
+  align-items: center;
+  gap: var(--s-3);
+  color: var(--mist-300);
+  font-size: var(--t-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+}
+
+.hero__scroll::after {
+  content: '';
+  width: 1px;
+  height: 3rem;
+  background: linear-gradient(var(--azul-400), transparent);
+  animation: scroll-hint 2.4s var(--ease-in-out) infinite;
+  transform-origin: top;
+}
+
+@keyframes scroll-hint {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+    opacity: 0.3;
+  }
+
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@media (min-width: 60rem) {
+  .hero__scroll {
+    display: flex;
+  }
+}
+
+/* Hero copy enters on load, bottom-up, staggered. This is the one place with an
+   on-load animation: it is the first thing seen, so it sets the tempo for the rest. */
+.hero__inner > * {
+  opacity: 0;
+  animation: hero-in 900ms var(--ease-out) forwards;
+}
+
+.hero__inner > *:nth-child(1) {
+  animation-delay: 80ms;
+}
+
+.hero__inner > *:nth-child(2) {
+  animation-delay: 180ms;
+}
+
+.hero__inner > *:nth-child(3) {
+  animation-delay: 300ms;
+}
+
+.hero__inner > *:nth-child(4) {
+  animation-delay: 420ms;
+}
+
+/* The pickup chip. Without its own delay it inherits 0ms and arrives *first*, ahead of
+   the title it is meant to follow. */
+.hero__inner > *:nth-child(5) {
+  animation-delay: 540ms;
+}
+
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   Cards — shared
+   --------------------------------------------------------------------------
+   The sheen is the site's signature: a soft diagonal highlight that travels across
+   a card on hover, the way a light travels across polished paint. It is the one
+   flourish that is actually about the product, so it earns its keep.
+   ========================================================================== */
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    border-color var(--d-mid) var(--ease-out),
+    transform var(--d-mid) var(--ease-out),
+    box-shadow var(--d-mid) var(--ease-out);
+}
+
+/* The highlight tracks the pointer (--mx/--my are written by main.js), so the light
+   moves across the card the way a workshop lamp moves across a panel. On a detailing
+   site this is the one flourish that is genuinely about the product, which is why it
+   earns the pointermove handler. Falls back to nothing when there is no hover. */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: radial-gradient(
+    22rem 22rem at var(--mx, 50%) var(--my, 0%),
+    rgb(142 217 247 / 16%),
+    rgb(47 181 232 / 6%) 35%,
+    transparent 65%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--d-mid) var(--ease-out);
+}
+
+/* A second, thinner pass along the top edge — the specular line you get on a wet
+   bonnet. Purely a border highlight, so it never competes with the content. */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    120deg,
+    transparent 30%,
+    rgb(142 217 247 / 45%) 50%,
+    transparent 70%
+  );
+  background-size: 220% 100%;
+  background-position: 130% 0;
+  /* Mask to the border only: fill the box, punch out the inside. */
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--d-mid) var(--ease-out),
+    background-position 1100ms var(--ease-out);
+}
+
+@media (hover: hover) {
+  .card:hover {
+    border-color: var(--line-strong);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-3);
+  }
+
+  .card:hover::before {
+    opacity: 1;
+  }
+
+  .card:hover::after {
+    opacity: 1;
+    background-position: -30% 0;
+  }
+}
+
+/* ==========================================================================
+   Packs
+   ========================================================================== */
+
+.packs__grid {
+  display: grid;
+  gap: var(--s-4);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 40rem) {
+  .packs__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 68rem) {
+  .packs__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* The fine print + the single strong CTA that used to live under the price table —
+   the conversion beat after a visitor has seen all four prices. */
+.packs__note {
+  margin-top: var(--s-5);
+  color: var(--text-muted);
+  font-size: var(--t-xs);
+  text-align: center;
+}
+
+.packs__cta {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--s-5);
+}
+
+.pack {
+  padding: var(--s-5);
+}
+
+.pack.is-featured {
+  border-color: rgb(5 159 208 / 45%);
+  background:
+    linear-gradient(180deg, rgb(5 159 208 / 8%), transparent 45%),
+    var(--surface);
+}
+
+.pack__badge {
+  position: absolute;
+  top: var(--s-4);
+  right: var(--s-4);
+  z-index: 3;
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--r-full);
+  background: var(--azul-600);
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pack__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-bottom: var(--s-4);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  color: var(--accent);
+}
+
+.pack__icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.pack__media {
+  margin: calc(var(--s-5) * -1) calc(var(--s-5) * -1) var(--s-5);
+  aspect-ratio: 4 / 3;
+  background: var(--surface-2);
+}
+
+.pack__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pack__name {
+  font-size: var(--t-xl);
+}
+
+.pack__variant {
+  display: inline-block;
+  margin-left: var(--s-2);
+  color: var(--accent);
+  font-family: var(--font-sans);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.pack__blurb {
+  margin-top: var(--s-3);
+  color: var(--text-muted);
+  font-size: var(--t-sm);
+}
+
+.pack__price {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-2);
+  margin-top: var(--s-5);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--line);
+}
+
+.pack__amount {
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: var(--t-3xl);
+  line-height: 1;
+  /* The number is swapped by JS when the tier changes; the class is added for one
+     frame to play the change. */
+  transition: none;
+}
+
+.pack__amount.is-changing {
+  animation: price-swap var(--d-slow) var(--ease-out);
+}
+
+@keyframes price-swap {
+  0% {
+    opacity: 0;
+    transform: translateY(-0.375rem);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pack__dur {
+  color: var(--text-muted);
+  font-size: var(--t-sm);
+}
+
+.pack__includes {
+  margin: var(--s-5) 0 var(--s-5);
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--s-2);
+}
+
+.pack__includes li {
+  display: flex;
+  gap: var(--s-2);
+  color: var(--text-body);
+  font-size: var(--t-sm);
+  line-height: 1.45;
+}
+
+.pack__includes svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex: none;
+  margin-top: 0.3rem;
+  color: var(--accent-ui);
+  stroke-width: 3;
+}
+
+.pack__foot {
+  margin-top: auto;
+}
+
+/* ==========================================================================
+   Vehicle selector
+   --------------------------------------------------------------------------
+   Radios, not buttons. It is a single-choice control, so the native semantics are
+   already correct: arrow keys work, the group is announced as a group, and the state
+   survives without JS. The visual is entirely in the label.
+   ========================================================================== */
+
+.tiers {
+  margin-bottom: var(--s-7);
+}
+
+.tiers__label {
+  display: block;
+  margin-bottom: var(--s-3);
+  color: var(--text-muted);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.tiers__set {
+  display: grid;
+  gap: var(--s-3);
+  padding: 0;
+  border: 0;
+  margin: 0;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 40rem) {
+  .tiers__set {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.tier {
+  position: relative;
+}
+
+.tier input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.tier__box {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-3);
+  min-height: 4.5rem;
+  height: 100%;
+  padding: var(--s-4);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  transition:
+    border-color var(--d-fast) var(--ease-out),
+    background-color var(--d-fast) var(--ease-out),
+    transform var(--d-fast) var(--ease-out);
+  pointer-events: none;
+}
+
+.tier input:hover + .tier__box {
+  border-color: var(--line-strong);
+}
+
+.tier input:active + .tier__box {
+  transform: scale(0.985);
+}
+
+.tier input:checked + .tier__box {
+  border-color: var(--accent-ui);
+  background: rgb(5 159 208 / 10%);
+}
+
+.tier input:focus-visible + .tier__box {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+
+.tier__box svg {
+  width: 1.375rem;
+  height: 1.375rem;
+  flex: none;
+  color: var(--text-muted);
+  transition: color var(--d-fast) var(--ease-out);
+}
+
+.tier input:checked + .tier__box svg {
+  color: var(--accent);
+}
+
+.tier__name {
+  color: var(--text);
+  font-size: var(--t-sm);
+  font-weight: 600;
+}
+
+.tier__desc {
+  margin-top: 0.125rem;
+  color: var(--text-muted);
+  font-size: var(--t-xs);
+  line-height: 1.45;
+}
+
+.tier__eg {
+  margin-top: var(--s-1);
+  color: var(--text-muted);
+  font-size: var(--t-xs);
+  opacity: 0.85;
+}
+
+/* ==========================================================================
+   Extras
+   ========================================================================== */
+
+.extras__grid {
+  display: grid;
+  gap: var(--s-4);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 40rem) {
+  .extras__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 64rem) {
+  .extras__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.extra {
+  padding: var(--s-5);
+}
+
+.extra__icon {
+  color: var(--accent);
+  margin-bottom: var(--s-4);
+}
+
+.extra__icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.extra__name {
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--t-base);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.extra__meta {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-2);
+  margin-top: var(--s-3);
+}
+
+.extra__price {
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: var(--t-xl);
+  line-height: 1;
+}
+
+.extra__dur {
+  color: var(--text-muted);
+  font-size: var(--t-xs);
+}
+
+.extra__note {
+  margin-top: var(--s-3);
+  color: var(--text-muted);
+  font-size: var(--t-sm);
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   Voucher
+   ========================================================================== */
+
+.voucher {
+  position: relative;
+  display: grid;
+  gap: var(--s-6);
+  align-items: center;
+  padding: clamp(1.75rem, 4vw, 3rem);
+  border: 1px solid rgb(5 159 208 / 40%);
+  border-radius: var(--r-xl);
+  background:
+    radial-gradient(70% 130% at 100% 0%, rgb(5 159 208 / 16%), transparent 60%),
+    var(--ink-850);
+  overflow: hidden;
+}
+
+@media (min-width: 52rem) {
+  .voucher {
+    grid-template-columns: 1fr auto;
+    gap: var(--s-8);
+  }
+}
+
+.voucher__title {
+  font-size: var(--t-2xl);
+}
+
+.voucher__lead {
+  max-width: 44ch;
+  margin-top: var(--s-3);
+  color: var(--text-muted);
+}
+
+.voucher__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-top: var(--s-4);
+  color: var(--accent);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.voucher__meta svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.voucher__figures {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--s-5);
+}
+
+.voucher__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+}
+
+.voucher__k {
+  color: var(--text-muted);
+  font-size: var(--t-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.voucher__before {
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-size: var(--t-xl);
+  text-decoration: line-through;
+  text-decoration-color: var(--azul-500);
+  text-decoration-thickness: 2px;
+}
+
+.voucher__now {
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: var(--t-4xl);
+  line-height: 0.9;
+}
+
+.voucher__save {
+  align-self: center;
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--r-full);
+  background: var(--azul-600);
+  color: #fff;
+  font-size: var(--t-xs);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.voucher__actions {
+  margin-top: var(--s-5);
+}
+
+.voucher__fine {
+  margin-top: var(--s-3);
+  color: var(--text-muted);
+  font-size: var(--t-xs);
+}
+
+/* ==========================================================================
+   Process
+   ========================================================================== */
+
+.steps {
+  display: grid;
+  gap: var(--s-6);
+  grid-template-columns: 1fr;
+  counter-reset: step;
+}
+
+@media (min-width: 48rem) {
+  .steps {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--s-7) var(--s-6);
+  }
+}
+
+@media (min-width: 68rem) {
+  .steps {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.step {
+  position: relative;
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--line);
+  counter-increment: step;
+}
+
+/* The rule above each step fills with blue as it scrolls in — the only thing on the
+   page that animates a non-transform property, and it is a 1px line on 4 elements. */
+.step::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--azul-500);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 700ms var(--ease-out);
+}
+
+.step.is-in::before {
+  transform: scaleX(1);
+}
+
+.step__n {
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: var(--t-sm);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.step__n::before {
+  content: '0' counter(step);
+}
+
+.step__title {
+  margin-top: var(--s-3);
+  font-size: var(--t-xl);
+}
+
+.step__body {
+  margin-top: var(--s-3);
+  color: var(--text-muted);
+  font-size: var(--t-sm);
+  line-height: 1.65;
+}
+
+/* ==========================================================================
+   Before / after
+   ========================================================================== */
+
+/* Portrait, matching the source photography (and the reels below it). Capped so a
+   4:5 card cannot grow to a screen and a half tall on desktop. */
+.ba {
+  position: relative;
+  width: 100%;
+  max-width: 28rem;
+  margin-inline: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  touch-action: pan-y;
+  cursor: ew-resize;
+  user-select: none;
+}
+
+/* Both layers must fill the card themselves. A <picture> is a plain inline-level box
+   with no intrinsic size: when its only child is absolutely positioned, the picture
+   collapses to zero height. clip-path then resolves its percentages against that
+   degenerate box and clips the layer to nothing — which also stops the browser ever
+   loading the image, because an element with no paint area never satisfies lazy
+   loading. Positioning the layers fixes the geometry and the loading in one go. */
+.ba__before,
+.ba__after {
+  position: absolute;
+  inset: 0;
+}
+
+.ba img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* The "after" is clipped from the left by --pos, which the handle drives. clip-path
+   on a static image is compositor-friendly; animating width would relayout. */
+.ba__after {
+  clip-path: inset(0 0 0 var(--pos, 50%));
+}
+
+.ba__tag {
+  position: absolute;
+  bottom: var(--s-4);
+  z-index: 3;
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--r-full);
+  background: rgb(7 9 13 / 78%);
+  backdrop-filter: blur(6px);
+  color: var(--white);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.ba__tag--before {
+  left: var(--s-4);
+}
+
+.ba__tag--after {
+  right: var(--s-4);
+}
+
+.ba__handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--pos, 50%);
+  z-index: 4;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--white);
+  box-shadow: 0 0 0 1px rgb(7 9 13 / 30%);
+}
+
+.ba__grip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--r-full);
+  background: var(--white);
+  color: var(--ink-950);
+  transform: translate(-50%, -50%);
+  box-shadow: var(--shadow-2);
+  transition: transform var(--d-fast) var(--ease-out);
+}
+
+.ba:active .ba__grip {
+  transform: translate(-50%, -50%) scale(0.92);
+}
+
+.ba__grip svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+/* The slider is a real input, positioned over the whole surface. That is what makes it
+   keyboard-operable and screen-reader-announced for free; the visual handle above is
+   only a decoration that follows it. */
+.ba__range {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: ew-resize;
+}
+
+.ba__hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  margin-top: var(--s-4);
+  color: var(--text-muted);
+  font-size: var(--t-xs);
+}
+
+.ba__hint svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Photo-less state. */
+.ba--empty {
+  display: grid;
+  place-items: center;
+  padding: var(--s-7) var(--s-5);
+  text-align: center;
+  aspect-ratio: auto;
+  min-height: 18rem;
+  cursor: default;
+  background:
+    radial-gradient(60% 80% at 50% 0%, rgb(5 159 208 / 10%), transparent 70%),
+    var(--surface);
+  border-style: dashed;
+  border-color: var(--line-strong);
+}
+
+.ba__ph-title {
+  font-size: var(--t-xl);
+}
+
+.ba__ph-body {
+  max-width: 48ch;
+  margin-top: var(--s-3);
+  color: var(--text-muted);
+  font-size: var(--t-sm);
+}
+
+.ba__ph-body code {
+  padding: 0.1em 0.35em;
+  border-radius: var(--r-sm);
+  background: var(--ink-950);
+  color: var(--azul-300);
+  font-size: 0.9em;
+}
+
+.work__grid {
+  display: grid;
+  gap: var(--s-5);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 56rem) {
+  .work__grid.has-pairs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ---- reels ----
+   The client's own Reels, transcoded to short silent loops (scripts/make-video.js).
+   Portrait 9:16 cards, like the Instagram they came from. On phones the row becomes
+   a scroll-snap carousel — three stacked 9:16 videos would be three screens tall. */
+
+.reels {
+  display: flex;
+  gap: var(--s-4);
+  margin-top: var(--s-7);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  /* Bleed to the viewport edge on mobile so the cut-off card hints at more. */
+  margin-inline: calc(var(--gutter) * -1);
+  padding-inline: var(--gutter);
+  padding-bottom: var(--s-2);
+}
+
+.reels::-webkit-scrollbar {
+  display: none;
+}
+
+.reel {
+  position: relative;
+  flex: 0 0 min(68vw, 17rem);
+  aspect-ratio: 9 / 16;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  overflow: hidden;
+  scroll-snap-align: center;
+  cursor: pointer;
+}
+
+@media (min-width: 56rem) {
+  .reels {
+    margin-inline: 0;
+    padding-inline: 0;
+    overflow: visible;
+    justify-content: center;
+  }
+
+  .reel {
+    flex: 0 1 19rem;
+  }
+}
+
+.reel video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.reel__caption {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 2;
+  padding: var(--s-6) var(--s-4) var(--s-4);
+  background: linear-gradient(180deg, transparent, rgb(7 9 13 / 85%));
+  color: var(--white);
+  font-size: var(--t-sm);
+  font-weight: 500;
+  pointer-events: none;
+}
+
+/* Play/pause affordance: a small badge that reflects state; the whole card toggles. */
+.reel__state {
+  position: absolute;
+  top: var(--s-3);
+  right: var(--s-3);
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--r-full);
+  background: rgb(7 9 13 / 65%);
+  backdrop-filter: blur(6px);
+  color: var(--white);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--d-fast) var(--ease-out);
+}
+
+.reel.is-paused .reel__state,
+.reel:hover .reel__state {
+  opacity: 1;
+}
+
+.reel__state svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.work__foot {
+  margin-top: var(--s-6);
+  text-align: center;
+}
+
+/* ==========================================================================
+   About
+   ========================================================================== */
+
+.about {
+  display: grid;
+  gap: var(--s-7);
+  align-items: center;
+}
+
+@media (min-width: 56rem) {
+  .about {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-9);
+  }
+}
+
+.about__body p + p {
+  margin-top: var(--s-4);
+}
+
+.about__body p {
+  color: var(--text-muted);
+  max-width: var(--measure);
+}
+
+.about__quote {
+  margin-top: var(--s-6);
+  padding-left: var(--s-5);
+  border-left: 2px solid var(--azul-500);
+}
+
+.about__quote p {
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: var(--t-2xl);
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.about__quote footer {
+  margin-top: var(--s-3);
+  color: var(--text-muted);
+  font-size: var(--t-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Square, to match the portrait's native frame — a 4:3 crop of a square close-up
+   magnifies the face and buries the chin under the caption. Capped and centred so the
+   column doesn't turn into a wall of face on wide screens. */
+.about__figure {
+  position: relative;
+  margin-inline: auto;
+  width: 100%;
+  max-width: 30rem;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  background: var(--surface);
+}
+
+.about__figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Photo-less state: the mark, oversized and cropped, on a blue wash. Reads as
+   art direction rather than absence. */
+.about__figure--empty {
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(80% 80% at 30% 20%, rgb(5 159 208 / 18%), transparent 70%),
+    var(--ink-850);
+  color: rgb(255 255 255 / 6%);
+}
+
+.about__figure--empty svg {
+  width: 62%;
+  height: auto;
+}
+
+.about__owner {
+  position: absolute;
+  left: var(--s-4);
+  bottom: var(--s-4);
+  z-index: 2;
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-md);
+  background: rgb(7 9 13 / 78%);
+  backdrop-filter: blur(8px);
+}
+
+.about__owner-k {
+  color: var(--mist-300);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.about__owner-v {
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: var(--t-lg);
+}
+
+/* ==========================================================================
+   FAQ
+   --------------------------------------------------------------------------
+   <details>/<summary>. Native disclosure semantics, works with JS off, and the
+   open state is announced. The only JS involved is the height transition.
+   ========================================================================== */
+
+.faq {
+  max-width: 52rem;
+  margin-inline: auto;
+}
+
+.faq__item {
+  border-bottom: 1px solid var(--line);
+}
+
+.faq__q {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding: var(--s-5) 0;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: var(--t-lg);
+  font-weight: 500;
+  line-height: 1.3;
+  cursor: pointer;
+  list-style: none;
+  transition: color var(--d-fast) var(--ease-out);
+}
+
+.faq__q::-webkit-details-marker {
+  display: none;
+}
+
+.faq__q:hover {
+  color: var(--accent);
+}
+
+.faq__q svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: none;
+  margin-top: 0.15rem;
+  color: var(--accent);
+  transition: transform var(--d-mid) var(--ease-out);
+}
+
+.faq__item[open] .faq__q svg {
+  transform: rotate(180deg);
+}
+
+/* With JS the element stays [open] while it collapses, so the chevron follows the
+   animation state instead of the attribute. */
+.js .faq__item[open]:not(.is-open) .faq__q svg {
+  transform: rotate(0deg);
+}
+
+.faq__a {
+  padding-bottom: var(--s-5);
+  color: var(--text-muted);
+  font-size: var(--t-sm);
+  line-height: 1.7;
+  max-width: var(--measure);
+}
+
+.faq__a p {
+  max-width: var(--measure);
+}
+
+/* ==========================================================================
+   CTA band
+   ========================================================================== */
+
+.band {
+  position: relative;
+  padding-block: clamp(4rem, 10vw, 7rem);
+  background: var(--ink-950);
+  overflow: hidden;
+  isolation: isolate;
+  text-align: center;
+}
+
+.band__media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+
+.band__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.band::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(60% 100% at 50% 50%, rgb(5 159 208 / 18%), transparent 70%),
+    rgb(7 9 13 / 78%);
+}
+
+.band__title {
+  max-width: 18ch;
+  margin-inline: auto;
+  font-size: var(--t-4xl);
+}
+
+.band__lead {
+  max-width: 44ch;
+  margin: var(--s-4) auto 0;
+  color: var(--mist-100);
+  font-size: var(--t-lg);
+}
+
+.band__actions {
+  justify-content: center;
+  margin-top: var(--s-6);
+}
+
+/* ==========================================================================
+   Contact
+   ========================================================================== */
+
+.contact {
+  display: grid;
+  gap: var(--s-7);
+}
+
+@media (min-width: 56rem) {
+  .contact {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-9);
+  }
+}
+
+.info {
+  display: grid;
+  gap: var(--s-5);
+}
+
+.info__row {
+  display: flex;
+  gap: var(--s-4);
+  padding-bottom: var(--s-5);
+  border-bottom: 1px solid var(--line);
+}
+
+.info__row:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* Pulled out of the plain list: this row answers "do I have to give up my morning?",
+   which stops more bookings than the address ever will. Tinted and boxed so the eye
+   lands here first, before the eight rows of practical detail below it. */
+.info__row--feature {
+  padding: var(--s-4);
+  border: 1px solid rgb(47 181 232 / 32%);
+  border-radius: var(--r-md);
+  background: rgb(47 181 232 / 8%);
+}
+
+.info__row--feature .info__k {
+  color: var(--accent);
+}
+
+.info__row--feature .info__v strong {
+  font-weight: 700;
+}
+
+.info__icon {
+  flex: none;
+  color: var(--accent);
+}
+
+.info__icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.info__k {
+  color: var(--text-muted);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.info__v {
+  margin-top: var(--s-1);
+  color: var(--text);
+  font-size: var(--t-base);
+  line-height: 1.5;
+}
+
+.info__v a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: rgb(47 181 232 / 40%);
+  text-underline-offset: 3px;
+  transition: text-decoration-color var(--d-fast) var(--ease-out);
+}
+
+.info__v a:hover {
+  text-decoration-color: currentcolor;
+}
+
+.info__sub {
+  margin-top: var(--s-1);
+  color: var(--text-muted);
+  font-size: var(--t-sm);
+}
+
+.areas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin-top: var(--s-3);
+}
+
+.areas li {
+  padding: 0.25rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: var(--r-full);
+  color: var(--text-muted);
+  font-size: var(--t-xs);
+  list-style: none;
+}
+
+.map {
+  position: relative;
+  min-height: 20rem;
+  height: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background:
+    radial-gradient(70% 70% at 50% 40%, rgb(5 159 208 / 14%), transparent 70%),
+    var(--surface);
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  padding: var(--s-6);
+  text-align: center;
+  transition:
+    border-color var(--d-mid) var(--ease-out),
+    transform var(--d-mid) var(--ease-out);
+}
+
+.map:hover {
+  border-color: var(--accent-ui);
+  transform: translateY(-3px);
+}
+
+/* A faint grid, so the panel reads as a map rather than an empty card — without
+   embedding Google Maps, which would ship a tracker and a cookie banner with it. */
+.map::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 2.5rem 2.5rem;
+  mask-image: radial-gradient(70% 70% at 50% 50%, #000, transparent);
+  opacity: 0.7;
+}
+
+.map__pin {
+  position: relative;
+  color: var(--accent);
+}
+
+.map__pin svg {
+  width: 2rem;
+  height: 2rem;
+  margin-inline: auto;
+}
+
+.map__addr {
+  position: relative;
+  margin-top: var(--s-4);
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: var(--t-lg);
+  line-height: 1.4;
+}
+
+.map__cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-top: var(--s-4);
+  color: var(--accent);
+  font-size: var(--t-sm);
+  font-weight: 600;
+}
+
+.map__cta svg {
+  width: 1rem;
+  height: 1rem;
+  transition: transform var(--d-mid) var(--ease-out);
+}
+
+.map:hover .map__cta svg {
+  transform: translateX(3px);
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.footer {
+  padding-block: var(--s-8) var(--s-6);
+  border-top: 1px solid var(--line);
+  background: var(--ink-950);
+  /* Clears the mobile sticky bar. */
+  padding-bottom: calc(var(--s-6) + env(safe-area-inset-bottom));
+}
+
+.footer__grid {
+  display: grid;
+  gap: var(--s-7);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 48rem) {
+  .footer__grid {
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: var(--s-8);
+  }
+}
+
+.footer__tag {
+  max-width: 30ch;
+  margin-top: var(--s-4);
+  color: var(--text-muted);
+  font-size: var(--t-sm);
+}
+
+.footer__h {
+  margin-bottom: var(--s-4);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.footer__list {
+  display: grid;
+  gap: var(--s-2);
+  padding: 0;
+  list-style: none;
+}
+
+.footer__list a,
+.footer__list span {
+  color: var(--text-muted);
+  font-size: var(--t-sm);
+  transition: color var(--d-fast) var(--ease-out);
+}
+
+.footer__list a:hover {
+  color: var(--accent);
+}
+
+.footer__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  margin-top: var(--s-8);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--line);
+  color: var(--text-muted);
+  font-size: var(--t-xs);
+}
+
+.footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-4);
+}
+
+.to-top {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-3);
+  margin: calc(var(--s-2) * -1) calc(var(--s-3) * -1);
+  border-radius: var(--r-md);
+  color: var(--text-muted);
+  font-size: var(--t-xs);
+  transition: color var(--d-fast) var(--ease-out);
+}
+
+.to-top:hover {
+  color: var(--accent);
+}
+
+.to-top svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  transition: transform var(--d-mid) var(--ease-out);
+}
+
+.to-top:hover svg {
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   Mobile sticky bar
+   --------------------------------------------------------------------------
+   The booking CTA leaves the screen the moment the hero scrolls away, and on a phone
+   that is 90% of the visit. This puts it back, permanently, without stealing the
+   header.
+   ========================================================================== */
+
+.bar {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: var(--z-bar);
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: var(--s-3);
+  padding: var(--s-3) var(--gutter);
+  padding-bottom: calc(var(--s-3) + env(safe-area-inset-bottom));
+  background: rgb(7 9 13 / 88%);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border-top: 1px solid var(--line);
+  transform: translateY(110%);
+  transition: transform var(--d-slow) var(--ease-out);
+}
+
+.bar.is-shown {
+  transform: translateY(0);
+}
+
+@media (min-width: 60rem) {
+  .bar {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   Motion
+   --------------------------------------------------------------------------
+   One idea runs through all of it: light moving across a surface, and material
+   settling into place. Nothing here spins, bounces or slides in from off-screen for
+   decoration — this business sells reflections, so the motion is reflections.
+
+   Every effect below is additive over a page that is already complete and readable,
+   and every one of them is switched off wholesale by the reduced-motion block at the
+   end of this file.
+   ========================================================================== */
+
+/* ---- reading progress ----
+   A hairline of brand cyan across the top. It is the cheapest possible orientation
+   cue on a long single page, and on this site it reads as a strip of light. */
+.progress {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: calc(var(--z-header) + 1);
+  height: 2px;
+  pointer-events: none;
+  background: transparent;
+}
+
+.progress span {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, var(--azul-600), var(--azul-400) 60%, var(--azul-300));
+  transform: scaleX(var(--p, 0));
+  transform-origin: left;
+  /* No transition: the value is written every frame from the scroll position, so a
+     transition would fight the input and lag behind the finger. */
+}
+
+/* ---- hero parallax ----
+   The photograph drifts slower than the page. --py is written by main.js. willChange
+   is set only while it is on screen (also by JS) so an idle hero costs nothing. */
+.hero__media {
+  transform: translate3d(0, var(--py, 0px), 0) scale(1.06);
+}
+
+/* The hero copy lifts and fades as it leaves, so the section hands over rather than
+   simply scrolling away. */
+.hero__inner {
+  transform: translate3d(0, calc(var(--py, 0px) * -0.35), 0);
+  opacity: var(--ho, 1);
+}
+
+/* ---- heading wipe ----
+   Section titles are revealed by a left-to-right wipe: a band of light passing over
+   the words rather than the words flying in. clip-path is compositor-friendly and
+   needs no extra markup, so the headings stay a single balanced text node.
+
+   The hero title is deliberately excluded: it already has its own staggered entrance,
+   and a transition whose start and end state are both present at first paint never
+   plays anyway — it would have to be a keyframe animation to work there. One
+   entrance per element. */
+.js .section__title {
+  clip-path: inset(0 100% -0.25em 0);
+  transition: clip-path 1100ms var(--ease-out);
+  transition-delay: calc(var(--reveal-delay, 0ms) + 120ms);
+}
+
+.js .is-in .section__title {
+  clip-path: inset(0 -0.15em -0.25em 0);
+}
+
+/* ---- photographs settle ----
+   Images ease down from a slight overscale as their card arrives. It is the
+   difference between a photo appearing and a photo being placed. */
+.js [data-reveal] .pack__media img,
+.js [data-reveal] .about__figure img,
+.js [data-reveal] .ba img {
+  transform: scale(1.07);
+  transition: transform 1400ms var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.js [data-reveal].is-in .pack__media img,
+.js [data-reveal].is-in .about__figure img,
+.js [data-reveal].is-in .ba img {
+  transform: scale(1);
+}
+
+/* ---- brand mark ----
+   A highlight sweeps the logo once on load and again on hover. The company is called
+   "garage of shine"; the mark may as well shine. */
+.brand {
+  position: relative;
+  overflow: hidden;
+}
+
+.brand::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    115deg,
+    transparent 42%,
+    rgb(255 255 255 / 38%) 50%,
+    transparent 58%
+  );
+  background-size: 260% 100%;
+  background-position: 160% 0;
+  pointer-events: none;
+  transition: background-position 900ms var(--ease-out);
+}
+
+.js .brand::after {
+  animation: brand-shine 1400ms var(--ease-out) 700ms 1;
+}
+
+.brand:hover::after {
+  background-position: -60% 0;
+}
+
+@keyframes brand-shine {
+  from {
+    background-position: 160% 0;
+  }
+
+  to {
+    background-position: -60% 0;
+  }
+}
+
+/* ---- buttons gloss ----
+   Solid buttons get the same specular sweep on hover. Contained to the two filled
+   variants: on ghost buttons there is no surface for light to sit on. */
+.btn--primary,
+.btn--light {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.btn--primary::after,
+.btn--light::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    115deg,
+    transparent 40%,
+    rgb(255 255 255 / 28%) 50%,
+    transparent 60%
+  );
+  background-size: 250% 100%;
+  background-position: 150% 0;
+  transition: background-position 800ms var(--ease-out);
+}
+
+.btn--primary:hover::after,
+.btn--light:hover::after {
+  background-position: -50% 0;
+}
+
+/* ---- reels ---- */
+.reel {
+  transition:
+    transform var(--d-mid) var(--ease-out),
+    border-color var(--d-mid) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .reel:hover {
+    transform: translateY(-4px);
+    border-color: var(--line-strong);
+  }
+}
+
+/* ---- FAQ ----
+   <details> snaps open by default, which on a page this smooth reads as a glitch.
+   main.js drives --h; the grid-rows technique animates to content height without
+   anyone hard-coding a pixel value. */
+/* Scoped to [open] on purpose. Giving the panel `display: grid` unconditionally beats
+   the UA rule that hides a closed <details>, and the element then reserves its full
+   height as blank space under every closed question. While closed it is left entirely
+   to the browser; the animation only exists in the open state, which is the only time
+   there is anything to animate. */
+.js .faq__item[open] > .faq__a {
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  padding-bottom: 0;
+  opacity: 0;
+  transition:
+    grid-template-rows var(--d-slow) var(--ease-out),
+    opacity var(--d-slow) var(--ease-out),
+    padding-bottom var(--d-slow) var(--ease-out);
+}
+
+.js .faq__item[open] > .faq__a > * {
+  min-height: 0;
+}
+
+.js .faq__item[open].is-open > .faq__a {
+  grid-template-rows: 1fr;
+  padding-bottom: var(--s-5);
+  opacity: 1;
+}
+
+/* ==========================================================================
+   Scroll reveal
+   --------------------------------------------------------------------------
+   Set by JS on [data-reveal]. If JS never runs, nothing is hidden — the class that
+   hides is added by the script itself, so a failed script cannot leave a blank page.
+   ========================================================================== */
+
+/* --reveal-y is signed by main.js from the edge the element left through, so a section
+   returning from above arrives downward instead of springing up from below. Defaults to
+   the downward-scroll case, which is the state everything starts in. */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(var(--reveal-y, 1.5rem));
+}
+
+.js [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 700ms var(--ease-out),
+    transform 700ms var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* ==========================================================================
+   Reduced motion
+   --------------------------------------------------------------------------
+   Everything above is decoration on top of a page that already works. This turns all
+   of it off — including the hero entrance and the ambient drift, which are the two
+   most likely to cause trouble for anyone who asked not to see this.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .hero__inner > *,
+  .menu.is-open .menu__link {
+    opacity: 1;
+    animation: none;
+  }
+
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .hero__glow {
+    animation: none;
+  }
+
+  /* Every surface highlight is decoration by definition — none of it survives here. */
+  .card::before,
+  .card::after,
+  .brand::after,
+  .btn--primary::after,
+  .btn--light::after,
+  .progress {
+    display: none;
+  }
+
+  /* Anything that hides content until it animates must be neutralised, or reduced
+     motion would mean reduced content. Headings show, photographs sit at their
+     natural scale, and the hero drops its parallax offsets entirely. */
+  .js .section__title,
+  .js .is-in .section__title {
+    clip-path: none;
+  }
+
+  .js [data-reveal] .pack__media img,
+  .js [data-reveal] .about__figure img,
+  .js [data-reveal] .ba img,
+  .js [data-reveal].is-in .pack__media img,
+  .js [data-reveal].is-in .about__figure img,
+  .js [data-reveal].is-in .ba img {
+    transform: none;
+  }
+
+  .hero__media,
+  .hero__inner {
+    transform: none;
+    opacity: 1;
+  }
+
+  /* The FAQ still opens and closes — it just does it instantly. */
+  .js .faq__item[open] > .faq__a {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    padding-bottom: var(--s-5);
+  }
+}
