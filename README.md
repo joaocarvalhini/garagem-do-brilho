@@ -30,8 +30,9 @@ Tudo o que está no site é da própria empresa, retirado da página Noona
 - **Morada e "aberto até às 19:00"** — da página Noona.
 - **Fotografias e vídeos** — do álbum Google Photos partilhado pelo cliente
   ("Coches", julho 2026). Hero, banda CTA, cartões dos packs e o antes/depois são
-  fotos reais (BMW Série 4: empoeirado → espuma → acabado); os três reels da secção
-  Trabalhos são vídeos deles transcodificados (Porsche Macan, espuma, jantes).
+  fotos reais (BMW Série 4: empoeirado → espuma → acabado); a foto do Daniel na
+  secção Sobre é dele; os três reels da secção Trabalhos são vídeos deles
+  transcodificados (Porsche Macan, espuma, jantes).
 - **Logótipo** — o vetor oficial (Inkscape, Rubik itálico + carro/gota/brilhos) está
   em `src/assets/brand/`. O `make-icons.js` extrai a marca sem texto para
   `brand/mark.svg` (viewBox justo, calculado por rasterização+trim) e gera os
@@ -44,14 +45,19 @@ Se os preços mudarem na Noona, o único ficheiro a tocar é
 
 ## O que falta (e o build avisa)
 
-1. **Foto do Daniel** (`source/daniel.jpg`) — a secção Sobre usa o fallback da marca
-   até haver uma foto de quem faz o trabalho. É a foto que mais converte.
-2. **Telefone/WhatsApp** — o site não tem nenhum; confirmar com o cliente.
-3. **Horário semanal completo** — só se sabe "aberto até às 19:00".
-4. **Domínio** — `garagemdobrilho.pt` é assumido; confirmar antes de publicar.
-5. **NIF e coordenadas GPS** — enriqueceriam o JSON-LD para pesquisa local.
-6. **Antes/depois enquadrado** — o par atual é honesto (mesmo carro, mesma entrada)
-   mas não é shot-for-shot; o CREDITS.md explica como fotografar o próximo.
+Correr `npm run build` imprime a lista real, e é essa que manda. Hoje são quatro:
+
+1. **Horário semanal completo** — só se sabe "aberto até às 19:00", da Noona. O horário
+   completo alimentaria também o `LocalBusiness` no JSON-LD.
+2. **Domínio** — `garagemdobrilho.pt` é assumido; confirmar antes de publicar. Até lá, o
+   canonical, o sitemap e o JSON-LD apontam para um domínio que pode não ser o dele.
+3. **NIF** — o JSON-LD sai sem `vatID`.
+4. **Coordenadas GPS** — o JSON-LD sai sem `geo`, que é o que pesa na pesquisa local.
+
+Fora da lista do build, porque não é um campo em falta mas um enquadramento a melhorar:
+
+- **Antes/depois shot-for-shot** — o par atual é honesto (mesmo carro, mesma entrada) mas
+  não é o mesmo enquadramento. O `src/assets/img/CREDITS.md` explica como fotografar o próximo.
 
 ## Arquitetura
 
