@@ -230,9 +230,46 @@
 
   "reviews": {
     "url": "https://maps.app.goo.gl/BTCgPpHSY5GYQiUv7",
-    "rating": null,
-    "count": null,
-    "items": []
+    "rating": 4.8,
+    "count": 12,
+    "items": [
+      {
+        "author": "Xana Honorio",
+        "rating": 5,
+        "date": "julho de 2026",
+        "text": "Serviço 5⭐️! O carro ficou mesmo impecável. Lavou tudo, aspirou ao pormenor e os estofos ficaram como novos. Dá para ver que faz o trabalho com dedicação e atenção aos detalhes. Recomendo a 100%"
+      },
+      {
+        "author": "jony macaroniii",
+        "rating": 5,
+        "date": "julho de 2026",
+        "text": "Trabalho de grande qualidade, o carro ficou impecável (acho que nunca tive o carro tão limpo). Recomendo sem dúvida :)"
+      },
+      {
+        "author": "Milton Paulo",
+        "rating": 4,
+        "date": "maio de 2026",
+        "text": "Só não dou 5 estrelas para servir de incentivo rumo à perfeição. Mas, falando a sério, fiquei extremamente satisfeito. O custo-benefício é excelente, considerando o excelente trabalho realizado."
+      },
+      {
+        "author": "Pipinha Costa",
+        "rating": 5,
+        "date": "julho de 2026",
+        "text": "Adorei, fizeram um excelente trabalho\nO que mais gostei foi do cheirinho bom que ficou no meu carro\nRecomendo e sem dúvida que vou voltar a usar os serviços"
+      },
+      {
+        "author": "Bernardo Lopes",
+        "rating": 4,
+        "date": "julho de 2026",
+        "text": "Simpatia e profissionalismo muito muito acima da média!\nServiço diferenciado e cuidadoso."
+      },
+      {
+        "author": "Hugo Gomes",
+        "rating": 5,
+        "date": "junho de 2026",
+        "text": "Gostei muito do resultado final, o carro ficou um brinquinho. Recomendo!"
+      }
+    ]
   },
 
   "voucher": {

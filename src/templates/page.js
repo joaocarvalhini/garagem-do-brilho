@@ -558,7 +558,13 @@ function reviews({ t, site }) {
     .map(
       (rev, n) => `<article class="card review" data-reveal="${n}">
         ${stars(rev.rating)}
-        <blockquote class="review__body"><p>“${esc(rev.text)}”</p></blockquote>
+        <blockquote class="review__body"><p>“${rev.text
+        .split('\n')
+        .map((line) => esc(line.trim()))
+        .filter(Boolean)
+        // Reviewers write in short lines with no closing punctuation; collapsing
+        // them into one paragraph runs the sentences together.
+        .join('<br>')}”</p></blockquote>
         <footer class="review__meta">
           <span class="review__author">${esc(rev.author)}</span>
           ${rev.date ? `<span class="review__date">${esc(rev.date)}</span>` : ''}
