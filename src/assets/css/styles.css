@@ -2105,10 +2105,35 @@ p {
 
 .review__meta {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--s-2);
+  align-items: center;
+  gap: var(--s-3);
+}
+
+/* Initial disc standing in for the reviewer's photo — see the note in page.js on why
+   the real one is not used. Hue comes from --avatar-h, set per name by the template. */
+.review__avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid hsl(var(--avatar-h, 197) 70% 62% / 32%);
+  border-radius: 50%;
+  background: hsl(var(--avatar-h, 197) 65% 48% / 18%);
+  color: hsl(var(--avatar-h, 197) 85% 78%);
+  font-family: var(--font-display);
+  font-size: var(--t-base);
+  font-weight: 600;
+  line-height: 1;
+  /* The glyph's optical centre sits above the box centre in this face. */
+  padding-top: 0.05em;
+}
+
+.review__who {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
 }
 
 .review__author {

@@ -563,6 +563,28 @@ function reviews({ t, site }) {
     Array.from({ length: n }, () => icon('star', { size: 16 })).join('') +
     '</span>';
 
+  /**
+   * Initial in a tinted disc, instead of the reviewer's Google photograph.
+   *
+   * The photographs are technically reachable, but using them would mean pointing
+   * img-src at googleusercontent (the CSP allows 'self' only), making every visitor's
+   * browser call Google on load — this site deliberately makes zero third-party
+   * requests, which is why the fonts are self-hosted — and depending on URLs Google
+   * rotates, so the faces would break silently. Copying them here instead would
+   * republish someone's photograph on a commercial site they never agreed to.
+   *
+   * Hues come from a fixed blue-teal set, so six discs side by side still read as one
+   * palette, and are assigned by position rather than by hashing the name: a hash
+   * collides, and two identical discs next to each other look like a bug. The colour
+   * carries no meaning, so cycling is honest.
+   */
+  const HUES = [197, 220, 172, 208, 232, 188];
+  const avatar = (name, n) => {
+    const initial = [...name.trim()][0].toLocaleUpperCase('pt-PT');
+    // Decorative: the name it stands for is in the very next element.
+    return `<span class="review__avatar" aria-hidden="true" style="--avatar-h:${HUES[n % HUES.length]}">${esc(initial)}</span>`;
+  };
+
   const cards = r.items
     .map(
       (rev, n) => `<article class="card review" data-reveal="${n}">
@@ -575,8 +597,11 @@ function reviews({ t, site }) {
         // them into one paragraph runs the sentences together.
         .join('<br>')}”</p></blockquote>
         <footer class="review__meta">
-          <span class="review__author">${esc(rev.author)}</span>
-          ${rev.date ? `<span class="review__date">${esc(rev.date)}</span>` : ''}
+          ${avatar(rev.author, n)}
+          <span class="review__who">
+            <span class="review__author">${esc(rev.author)}</span>
+            ${rev.date ? `<span class="review__date">${esc(rev.date)}</span>` : ''}
+          </span>
         </footer>
       </article>`
     )
