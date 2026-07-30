@@ -1,8 +1,8 @@
 {
   "meta": {
-    "title": "Garagem do Brilho — Limpeza de Detalhe Automóvel | Marinha Grande",
+    "title": "Garagem do Brilho: Limpeza de Detalhe Automóvel | Marinha Grande",
     "description": "Limpeza de detalhe automóvel na Marinha Grande. Lavagem completa, higienização a vapor, descontaminação de pintura e proteção em cera. Recolha e entrega do carro. Marcação online.",
-    "ogAlt": "BMW cinzento acabado de lavar, com o logótipo da Garagem do Brilho — limpeza de detalhe automóvel na Marinha Grande"
+    "ogAlt": "BMW cinzento acabado de lavar, com o logótipo da Garagem do Brilho. Limpeza de detalhe automóvel na Marinha Grande"
   },
 
   "skipLink": "Saltar para o conteúdo",
@@ -22,7 +22,7 @@
   "hero": {
     "eyebrow": "Marinha Grande · Leiria",
     "title": "Devolvemos o aspeto de novo ao seu carro.",
-    "lead": "Limpeza de detalhe automóvel, feita sem pressa e com atenção ao pormenor. Não é uma lavagem rápida — é um trabalho demorado, feito à mão.",
+    "lead": "Limpeza de detalhe automóvel, feita sem pressa e com atenção ao pormenor. O tempo é dedicado a cada detalhe, para garantir um acabamento de elevada qualidade.",
     "ctaPrimary": "Marcar a lavagem",
     "ctaSecondary": "Ver preços",
     "scroll": "Ver mais",
@@ -34,7 +34,7 @@
   "packs": {
     "eyebrow": "Serviços",
     "title": "Quatro packs à escolha.",
-    "lead": "Do essencial ao tratamento completo de pintura. O preço varia com o tamanho do carro — escolha o tipo abaixo e os valores acompanham.",
+    "lead": "Do essencial ao tratamento completo de pintura. O preço varia com o tamanho do carro. Escolha o tipo abaixo e os valores acompanham.",
     "featuredLabel": "Mais escolhido",
     "includesLabel": "Inclui",
     "durationLabel": "Duração",
@@ -90,7 +90,7 @@
       },
       {
         "title": "Recebemos o carro",
-        "body": "Traga-o à garagem ou vamos nós buscá-lo — a recolha faz parte do serviço, sempre que precisar. Vê-se o estado real da viatura antes de começar e, se algo precisar de um complemento — motor, estofos, alcatifa — falamos consigo primeiro."
+        "body": "Traga-o à garagem ou vamos nós buscá-lo: a recolha faz parte do serviço, sempre que precisar. Vê-se o estado real da viatura antes de começar e, se algo precisar de um complemento (motor, estofos, alcatifa), falamos consigo primeiro."
       },
       {
         "title": "Trabalha-se o pormenor",
@@ -98,7 +98,7 @@
       },
       {
         "title": "Devolve-se como novo",
-        "body": "O carro sai como devia ter saído do stand. É esse o padrão — e é por isso que uma Detalhada leva oito horas e não quarenta minutos. Se preferir não vir buscá-lo, entregamo-lo onde precisar."
+        "body": "O carro sai como devia ter saído do stand. É esse o padrão, e é por isso que uma Detalhada leva oito horas. Se preferir não vir buscá-lo, entregamo-lo onde precisar."
       }
     ]
   },
@@ -106,20 +106,20 @@
   "work": {
     "eyebrow": "Trabalhos",
     "title": "Da espuma ao brilho.",
-    "lead": "O mesmo carro, no mesmo sítio, com uma lavagem completa pelo meio. Arraste o cursor sobre a foto — e veja o resto no Instagram, é lá que publicamos os trabalhos da semana.",
+    "lead": "O mesmo carro, no mesmo sítio, com uma lavagem completa pelo meio. Arraste o cursor sobre a foto e veja o resto no Instagram, é lá que publicamos os trabalhos da semana.",
     "cta": "Ver no Instagram",
     "sliderLabel": "Arraste para comparar",
     "beforeLabel": "Em lavagem",
     "afterLabel": "Depois",
     "videoHint": "Toque num vídeo para pausar",
     "reels": {
-      "reel-espuma": "Espuma ativa — assim começa cada lavagem",
-      "reel-macan": "Porsche Macan — o brilho final",
-      "reel-jante": "Jantes e pinças — o pormenor que se nota"
+      "reel-espuma": "Espuma ativa: assim começa cada lavagem",
+      "reel-macan": "Porsche Macan: o brilho final",
+      "reel-jante": "Jantes e pinças: o pormenor que se nota"
     },
     "placeholder": {
       "title": "Fotografias a caminho",
-      "body": "As fotos reais dos trabalhos entram aqui assim que chegarem. A estrutura já está pronta — é só colocar os ficheiros em src/assets/img/source e correr npm run images."
+      "body": "As fotos reais dos trabalhos entram aqui assim que chegarem. A estrutura já está pronta, é só colocar os ficheiros em src/assets/img/source e correr npm run images."
     }
   },
 
@@ -127,8 +127,8 @@
     "eyebrow": "Sobre",
     "title": "Uma garagem. Nenhum carro despachado.",
     "body": [
-      "A Garagem do Brilho é um espaço de limpeza de detalhe automóvel na Marinha Grande. Não é um túnel de lavagem, nem uma cadeia — é uma garagem onde cada carro é tratado individualmente, do princípio ao fim.",
-      "O foco é sempre o mesmo: o pormenor. Aquilo que se nota num carro bem tratado quase nunca salta à vista — são as calhas dos vidros, os frisos, o interior das jantes, a costura dos bancos. É aí que se põe o tempo."
+      "A Garagem do Brilho é um espaço de limpeza de detalhe automóvel na Marinha Grande. Não é um túnel de lavagem, nem uma cadeia: é uma garagem onde cada carro é tratado individualmente, do princípio ao fim.",
+      "O foco é sempre o mesmo: o pormenor. Aquilo que se nota num carro bem tratado quase nunca salta à vista: são as calhas dos vidros, os frisos, o interior das jantes, a costura dos bancos. É aí que se põe o tempo."
     ],
     "quote": "Devolvemos o aspeto de novo ao seu carro.",
     "quoteAttrib": "Garagem do Brilho",
@@ -156,7 +156,7 @@
       },
       {
         "q": "Como sei se o meu carro é Citadino, Familiar ou SUV & XL?",
-        "a": "Pelo formato, não pela marca. Citadino são os citadinos e hatchbacks (Fiat 500, Clio, Golf). Familiar são sedans e carrinhas (Série 3, A4, Classe C). SUV & XL cobre SUVs, monovolumes, pickups e tudo o que tenha terceira fila de bancos (XC90, Hilux, X5). Na dúvida, escolha o mais próximo — confirmamos quando recebermos o carro."
+        "a": "Pelo formato, não pela marca. Citadino são os citadinos e hatchbacks (Fiat 500, Clio, Golf). Familiar são sedans e carrinhas (Série 3, A4, Classe C). SUV & XL cobre SUVs, monovolumes, pickups e tudo o que tenha terceira fila de bancos (XC90, Hilux, X5). Na dúvida, escolha o mais próximo: confirmamos quando recebermos o carro."
       },
       {
         "q": "Qual é a diferença entre a Completa Têxteis e a Completa Peles?",
@@ -164,7 +164,7 @@
       },
       {
         "q": "Quanto tempo fica o carro convosco?",
-        "a": "Depende do pack e do tamanho. Uma Simples são 150 minutos (240 num SUV). Uma Completa vai dos 300 aos 360 minutos. Uma Detalhada ocupa o dia — 480 minutos, em qualquer tamanho. A duração exata aparece na marcação."
+        "a": "Depende do pack e do tamanho. Uma Simples são 150 minutos (240 num SUV). Uma Completa vai dos 300 aos 360 minutos. Uma Detalhada ocupa o dia: 480 minutos, em qualquer tamanho. A duração exata aparece na marcação."
       },
       {
         "q": "O que é que a Detalhada tem que as Completas não têm?",
@@ -172,7 +172,7 @@
       },
       {
         "q": "Posso juntar complementos a um pack?",
-        "a": "Pode. A lavagem do motor, os estofos e as restantes opções aparecem como complementos na marcação e podem ser adicionados ao pack que escolher — ou marcados isoladamente, em Personalizado."
+        "a": "Pode. A lavagem do motor, os estofos e as restantes opções aparecem como complementos na marcação e podem ser adicionados ao pack que escolher, ou marcados isoladamente, em Personalizado."
       },
       {
         "q": "Preciso de marcar antecipadamente?",

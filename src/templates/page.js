@@ -194,7 +194,7 @@ function header({ t, site }) {
     ['contactos', t.nav.contact],
   ];
 
-  const brand = `<a class="brand" href="#top" aria-label="${esc(site.company.name)} — ${t.footer.backToTop}">
+  const brand = `<a class="brand" href="#top" aria-label="${esc(site.company.name)}, ${t.footer.backToTop}">
     ${icon('logo')}
     <span class="brand__name">${esc(site.company.name)}
       <span class="brand__sub">${esc(site.company.lockupSub)}</span>
@@ -515,7 +515,7 @@ function work({ t, site, lqip }) {
 function about({ t, site, lqip }) {
   const img = picture('about-owner', IMG['about-owner'], {
     lqip,
-    alt: `${site.company.owner} — ${t.about.imgAlt}`,
+    alt: `${site.company.owner}, ${t.about.imgAlt}`,
     sizes: '(min-width: 56rem) 50vw, 100vw',
   });
 
@@ -761,7 +761,7 @@ function footer({ t, site }) {
           ${icon('logo')}
           <span class="brand__name">${esc(site.company.name)}</span>
         </a>
-        <p class="footer__tag">${esc(t.footer.tagline)} — ${esc(site.contact.address.locality)}, ${esc(site.contact.address.region)}.</p>
+        <p class="footer__tag">${esc(t.footer.tagline)}, ${esc(site.contact.address.locality)}, ${esc(site.contact.address.region)}.</p>
       </div>
       <nav aria-label="${esc(t.footer.nav)}">
         <p class="footer__h">${esc(t.footer.nav)}</p>
@@ -774,10 +774,10 @@ function footer({ t, site }) {
         <ul class="footer__list">
           <li><span>${esc(site.contact.address.street)}</span></li>
           <li><span>${esc(`${site.contact.address.postalCode} ${site.contact.address.locality}`)}</span></li>
-          ${site.contact.whatsapp ? `<li><a href="${site.contact.whatsapp}" rel="noopener">${esc(t.contact.whatsappLabel)} — ${esc(site.contact.phoneDisplay)}</a></li>` : ''}
+          ${site.contact.whatsapp ? `<li><a href="${site.contact.whatsapp}" rel="noopener">${esc(t.contact.whatsappLabel)}: ${esc(site.contact.phoneDisplay)}</a></li>` : ''}
           <li><a href="${site.contact.instagram}" rel="noopener">${esc(site.contact.instagramHandle)}</a></li>
           ${site.contact.facebook ? `<li><a href="${site.contact.facebook}" rel="noopener">${esc(t.contact.facebookLabel)}</a></li>` : ''}
-          <li><a href="${site.contact.booking}" rel="noopener">${esc(t.nav.book)} — Noona</a></li>
+          <li><a href="${site.contact.booking}" rel="noopener">${esc(t.nav.book)}: Noona</a></li>
         </ul>
       </div>
     </div>
