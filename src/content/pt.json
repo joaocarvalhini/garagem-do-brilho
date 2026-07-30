@@ -136,6 +136,16 @@
     "imgAlt": "fundador da Garagem do Brilho"
   },
 
+  "reviews": {
+    "eyebrow": "Avaliações",
+    "title": "O que dizem os clientes.",
+    "lead": "Avaliações deixadas no Google por quem já cá trouxe o carro.",
+    "ratingLabel": "de 5",
+    "countLabel": "avaliações no Google",
+    "starsLabel": "estrelas em 5",
+    "cta": "Ver todas no Google"
+  },
+
   "faq": {
     "eyebrow": "Perguntas",
     "title": "O que costumam perguntar.",

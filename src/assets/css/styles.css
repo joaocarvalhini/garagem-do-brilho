@@ -34,6 +34,12 @@
   --azul-600: #047aa3;
   --azul-700: #035e80;
 
+  /* The one warm hue in an otherwise cyan palette, and it earns the exception: a
+     star rating drawn in brand cyan stops reading as a rating. Two stops so it
+     clears 3:1 as graphical content on dark surfaces and on paper alike. */
+  --ambar-400: #f7bf3f;
+  --ambar-600: #a06f00;
+
   --paper: #fff;
   --paper-alt: #f1f4f9;
   --ink: #0b0e14;
@@ -56,6 +62,7 @@
   --line: rgb(255 255 255 / 9%);
   --line-strong: rgb(255 255 255 / 16%);
   --ring: var(--azul-400);
+  --star: var(--ambar-400);
 
   /* ---- type ---- */
   --font-display: 'Space Grotesk', 'Inter', system-ui, -apple-system, 'Segoe UI', roboto, sans-serif;
@@ -134,6 +141,7 @@
   --accent-ui: var(--azul-600);
   --line: rgb(11 14 20 / 10%);
   --line-strong: rgb(11 14 20 / 18%);
+  --star: var(--ambar-600);
   --shadow-2: 0 8px 24px -8px rgb(11 14 20 / 14%);
   --shadow-3: 0 24px 60px -16px rgb(11 14 20 / 16%);
 }
@@ -2014,6 +2022,109 @@ p {
   color: var(--white);
   font-family: var(--font-display);
   font-size: var(--t-lg);
+}
+
+/* ==========================================================================
+   Reviews
+   --------------------------------------------------------------------------
+   Composed from .card, like .extra — the pointer highlight and border sheen come
+   for free. Only the quote-specific pieces live here.
+   ========================================================================== */
+
+/* Centred and capped: the score is a single figure, and a full-width row of it
+   next to nothing reads as unfinished. */
+.reviews__score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-2);
+  margin-bottom: var(--s-7);
+}
+
+.reviews__score-n {
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: var(--t-4xl);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.reviews__score-of {
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: var(--t-base);
+  font-weight: 400;
+}
+
+.reviews__score-c {
+  color: var(--text-muted);
+  font-size: var(--t-sm);
+}
+
+.reviews__grid {
+  display: grid;
+  gap: var(--s-4);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 44rem) {
+  .reviews__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 68rem) {
+  .reviews__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.review {
+  padding: var(--s-5);
+  gap: var(--s-4);
+}
+
+.review__stars {
+  display: inline-flex;
+  gap: 0.1rem;
+  color: var(--star);
+}
+
+.review__body {
+  /* margin-block-start comes from the card's gap, so the quote sits flush. */
+  flex: 1;
+}
+
+.review__body p {
+  color: var(--text);
+  font-size: var(--t-base);
+  line-height: 1.6;
+  /* Long reviews stay readable; short ones don't stretch the card. */
+  max-width: var(--measure);
+}
+
+.review__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-2);
+}
+
+.review__author {
+  color: var(--white);
+  font-size: var(--t-sm);
+  font-weight: 600;
+}
+
+.review__date {
+  color: var(--text-muted);
+  font-size: var(--t-xs);
+}
+
+.reviews__foot {
+  margin-top: var(--s-6);
+  text-align: center;
 }
 
 /* ==========================================================================

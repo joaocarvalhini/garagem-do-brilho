@@ -67,6 +67,13 @@ function audit(site, lqip) {
   if (!site.company.nif) {
     warn.push('company.nif is unknown — JSON-LD ships without vatID.');
   }
+  if (!site.reviews.items.length) {
+    warn.push(
+      'reviews.items is empty — the Google reviews section does not render at all. It is the ' +
+        'only third-party proof the site would carry, so this is the largest conversion gap ' +
+        'open. Paste real reviews from the profile into site.json; never invent them.'
+    );
+  }
   if (!site.contact.geo.lat) {
     warn.push('contact.geo is unknown — JSON-LD ships without geo coordinates for local search.');
   }

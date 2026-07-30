@@ -534,6 +534,68 @@ function about({ t, site, lqip }) {
 </section>`;
 }
 
+/**
+ * Google reviews, quoted verbatim from the business profile.
+ *
+ * Renders nothing when `site.reviews.items` is empty — an empty testimonials block is
+ * worse than no testimonials, and inventing one is not an option. Same contract as the
+ * reels above: content on disk (or in site.json) decides whether the section exists.
+ *
+ * Deliberately no Review/AggregateRating JSON-LD: these are third-party reviews
+ * republished here, and marking them up as the site's own is against Google's review
+ * snippet guidelines. The stars that matter already show on the business profile.
+ */
+function reviews({ t, site }) {
+  const r = site.reviews;
+  if (!r || !Array.isArray(r.items) || r.items.length === 0) return '';
+
+  const stars = (n) =>
+    `<span class="review__stars" role="img" aria-label="${n} ${esc(t.reviews.starsLabel)}">` +
+    Array.from({ length: n }, () => icon('star', { size: 16 })).join('') +
+    '</span>';
+
+  const cards = r.items
+    .map(
+      (rev, n) => `<article class="card review" data-reveal="${n}">
+        ${stars(rev.rating)}
+        <blockquote class="review__body"><p>“${esc(rev.text)}”</p></blockquote>
+        <footer class="review__meta">
+          <span class="review__author">${esc(rev.author)}</span>
+          ${rev.date ? `<span class="review__date">${esc(rev.date)}</span>` : ''}
+        </footer>
+      </article>`
+    )
+    .join('\n      ');
+
+  // The headline figure only renders when both numbers are known, so a partial
+  // summary never implies a rating the profile does not have.
+  const summary =
+    r.rating != null && r.count != null
+      ? `<div class="reviews__score" data-reveal>
+      <p class="reviews__score-n">${esc(new Intl.NumberFormat('pt-PT', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(r.rating))}<span class="reviews__score-of"> ${esc(t.reviews.ratingLabel)}</span></p>
+      ${stars(Math.round(r.rating))}
+      <p class="reviews__score-c">${r.count} ${esc(t.reviews.countLabel)}</p>
+    </div>`
+      : '';
+
+  return `<section class="section section--alt" id="avaliacoes">
+  <div class="container">
+    <div class="section__head section__head--center" data-reveal>
+      <p class="eyebrow">${esc(t.reviews.eyebrow)}</p>
+      <h2 class="section__title">${esc(t.reviews.title)}</h2>
+      <p class="section__lead">${esc(t.reviews.lead)}</p>
+    </div>
+    ${summary}
+    <div class="reviews__grid">
+      ${cards}
+    </div>
+    <div class="reviews__foot" data-reveal>
+      <a class="btn btn--ghost" href="${r.url}" rel="noopener">${icon('star', { size: 16 })}${esc(t.reviews.cta)}</a>
+    </div>
+  </div>
+</section>`;
+}
+
 function faq({ t }) {
   return `<section class="section is-light">
   <div class="container">
@@ -740,6 +802,7 @@ ${extras(ctx)}
 ${process(ctx)}
 ${work(ctx)}
 ${about(ctx)}
+${reviews(ctx)}
 ${faq(ctx)}
 ${band(ctx)}
 ${contact(ctx)}

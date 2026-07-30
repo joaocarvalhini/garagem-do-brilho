@@ -41,6 +41,13 @@ const icons = {
   whatsapp: () => svg('<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>'),
   facebook: () =>
     svg('<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>'),
+  /* Filled, unlike the rest of the set: a hollow star reads as "not awarded" next to a
+     solid one, so an outline version would misreport the rating. */
+  star: () =>
+    svg(
+      '<path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.11a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.895a.53.53 0 0 1 .294-.903l5.16-.755a2.122 2.122 0 0 0 1.597-1.16z"/>',
+      { fill: true }
+    ),
   play: () => svg('<path d="M6 3.5 20 12 6 20.5z"/>', { fill: true }),
   pause: () =>
     `<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true" focusable="false">` +

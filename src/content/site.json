@@ -228,6 +228,13 @@
     }
   ],
 
+  "reviews": {
+    "url": "https://maps.app.goo.gl/BTCgPpHSY5GYQiUv7",
+    "rating": null,
+    "count": null,
+    "items": []
+  },
+
   "voucher": {
     "name": "3 Lavagens + 1 Grátis",
     "kind": "Voucher da série · 4 sessões",
