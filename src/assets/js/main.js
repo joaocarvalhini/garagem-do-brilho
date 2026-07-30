@@ -608,8 +608,70 @@
   }
 
   /* ------------------------------------------------------------------ *
+   * Booking clicks
+   * ------------------------------------------------------------------ *
+   * The booking happens on noona.pt, so the site cannot see its own conversion. The
+   * click that leaves for Noona is the closest thing it can see, and counting those is
+   * the difference between knowing the site works and assuming it.
+   *
+   * sendBeacon, not fetch: the browser hands the request to the OS and lets the page
+   * navigate away immediately, so nothing is delayed and nothing is lost to the unload.
+   * Every branch here is wrapped or optional — a counter must never be able to cost a
+   * booking. With JS off, or if this throws, the link is a plain <a> and still works.
+   */
+  function trackBookingClicks() {
+    if (!navigator.sendBeacon) return;
+
+    const links = qa('a[href*="noona.pt"]');
+    if (!links.length) return;
+
+    // The hero's id is "top" and the packs section holds five buttons; neither name
+    // means anything in a report, so the ids that exist get read names here.
+    const NAMED = { top: 'hero', packs: 'packs', contactos: 'contactos' };
+
+    const slug = (s) =>
+      s
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '')
+        .slice(0, 40);
+
+    /* Chrome first: the header, menu, sticky bar and footer buttons all read "Marcar",
+       so only their position tells them apart. Three sections carry no id, and for
+       those the button's own words are the better label anyway — "comprar-voucher"
+       says more about intent than the section would. */
+    const label = (a) => {
+      if (a.closest('[data-bar]')) return 'barra';
+      if (a.closest('[data-menu]')) return 'menu';
+      if (a.closest('[data-header]')) return 'cabecalho';
+      if (a.closest('footer')) return 'rodape';
+      const id = a.closest('section[id]')?.id;
+      if (id) return NAMED[id] || id;
+      return slug(a.textContent) || 'outro';
+    };
+
+    for (const a of links) {
+      const de = label(a);
+      a.addEventListener(
+        'click',
+        () => {
+          try {
+            navigator.sendBeacon(`/e?ev=marcar&de=${encodeURIComponent(de)}`);
+          } catch {
+            /* Counting is never worth breaking the click for. */
+          }
+        },
+        { passive: true }
+      );
+    }
+  }
+
+  /* ------------------------------------------------------------------ *
    * Boot
    * ------------------------------------------------------------------ */
 
   reveal();
+  trackBookingClicks();
 })();

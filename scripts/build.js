@@ -147,13 +147,20 @@ Sitemap: ${site.site.domain}/sitemap.xml`;
 /**
  * Netlify/Cloudflare Pages read _headers. Fingerprinted assets get a one-year
  * immutable cache; HTML must always revalidate or a deploy won't reach anyone.
+ *
+ * cloudflareinsights is the single exception to the site's no-third-party rule, and only
+ * so the free Web Analytics can be switched on in the Cloudflare dashboard without the
+ * CSP silently blocking it. It is cookieless and stores no personal data, and Cloudflare
+ * already serves every byte of this site — so it exposes the visitor to no party that
+ * was not already handling the request. Nothing is loaded from there until that toggle
+ * is turned on. Google Analytics would not qualify on either count.
  */
 const headers = `/*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: SAMEORIGIN
   Permissions-Policy: geolocation=(), microphone=(), camera=(), interest-cohort=()
-  Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; font-src 'self'; form-action 'self'; frame-ancestors 'self'; base-uri 'self'
+  Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' static.cloudflareinsights.com; connect-src 'self' cloudflareinsights.com; font-src 'self'; form-action 'self'; frame-ancestors 'self'; base-uri 'self'
 
 /assets/fonts/*
   Cache-Control: public, max-age=31536000, immutable

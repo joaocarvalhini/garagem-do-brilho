@@ -140,6 +140,19 @@ function head({ t, site, lqip, preloadFonts, cssHash, jsHash }) {
     priceRange: '€€',
   };
 
+  /* The FAQ block, declared so Google can expand it under the result. Built from the
+     same t.faq.items the page renders, never a separate copy: marking up an answer the
+     visitor cannot read on the page is what gets this kind of markup penalised. */
+  const faqLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: t.faq.items.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  };
+
   return `<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(t.meta.title)}</title>
@@ -179,7 +192,8 @@ ${preloadFonts
   the script genuinely failed, and the page falls back to fully visible.
 -->
 <script>var d=document.documentElement;d.classList.add('js');window.__gbFail=setTimeout(function(){d.classList.remove('js')},4000)</script>
-<script type="application/ld+json">${JSON.stringify(jsonld)}</script>`;
+<script type="application/ld+json">${JSON.stringify(jsonld)}</script>
+<script type="application/ld+json">${JSON.stringify(faqLd)}</script>`;
 }
 
 function header({ t, site }) {
