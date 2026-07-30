@@ -10,9 +10,10 @@
     "images": "node scripts/process-images.js",
     "icons": "node scripts/make-icons.js",
     "fonts": "node scripts/fetch-fonts.js",
+    "og": "node scripts/og-image.js",
     "contrast": "node scripts/check-contrast.js",
-    "setup": "npm run fonts && npm run icons && npm run images && npm run video && npm run build",
-    "video": "node scripts/make-video.js"
+    "video": "node scripts/make-video.js",
+    "setup": "npm run fonts && npm run icons && npm run images && npm run video && npm run og && npm run build"
   },
   "engines": {
     "node": ">=18"

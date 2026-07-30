@@ -103,6 +103,9 @@ const ICONS = [
   'apple-touch-icon.png',
   'icon-192.png',
   'icon-512.png',
+  // The link-preview card. Root-level rather than /assets/img/ because that path is
+  // served immutable for a year and this one occasionally has to be re-scraped.
+  'og-share.jpg',
 ];
 
 function manifest(site, t) {

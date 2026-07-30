@@ -152,6 +152,15 @@ function head({ t, site, lqip, preloadFonts, cssHash, jsHash }) {
 <meta property="og:url" content="${site.site.domain}/">
 <meta property="og:locale" content="${site.site.locale}">
 <meta property="og:site_name" content="${esc(company.name)}">
+<meta property="og:image" content="${site.site.domain}/og-share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:alt" content="${esc(t.meta.ogAlt)}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(t.meta.title)}">
+<meta name="twitter:description" content="${esc(t.meta.description)}">
+<meta name="twitter:image" content="${site.site.domain}/og-share.jpg">
 <link rel="icon" href="/favicon-32.png" sizes="32x32">
 <link rel="icon" href="/favicon-48.png" sizes="48x48">
 <link rel="icon" href="/favicon-96.png" sizes="96x96">

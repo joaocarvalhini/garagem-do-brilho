@@ -45,14 +45,14 @@ Se os preços mudarem na Noona, o único ficheiro a tocar é
 
 ## O que falta (e o build avisa)
 
-Correr `npm run build` imprime a lista real, e é essa que manda. Hoje são quatro:
+Correr `npm run build` imprime a lista real, e é essa que manda. Hoje são duas:
 
 1. **Horário semanal completo** — só se sabe "aberto até às 19:00", da Noona. O horário
    completo alimentaria também o `LocalBusiness` no JSON-LD.
-2. **Domínio** — `garagemdobrilho.pt` é assumido; confirmar antes de publicar. Até lá, o
-   canonical, o sitemap e o JSON-LD apontam para um domínio que pode não ser o dele.
-3. **NIF** — o JSON-LD sai sem `vatID`.
-4. **Coordenadas GPS** — o JSON-LD sai sem `geo`, que é o que pesa na pesquisa local.
+2. **NIF** — o JSON-LD sai sem `vatID`.
+
+Resolvidos desde então: o domínio (`garagemdobrilho.pt`, confirmado pelo cliente a
+2026-07-30) e as coordenadas GPS, tiradas do próprio perfil do Google Business.
 
 Fora da lista do build, porque não é um campo em falta mas um enquadramento a melhorar:
 
@@ -69,6 +69,7 @@ scripts/
   process-images.js  AVIF/WebP responsivos + LQIP; tolera fotos em falta
   make-video.js      transcodifica os Reels (ffmpeg): loops mudos 720p + posters
   make-icons.js      extrai a marca do vetor oficial e gera os favicons
+  og-image.js        cartão de partilha 1200x630 (WhatsApp/Facebook) — `npm run og`
   check-contrast.js  auditoria WCAG AA da paleta — falha o exit code se falhar um par
 src/
   assets/brand/      vetores oficiais do logótipo + mark.svg extraída
