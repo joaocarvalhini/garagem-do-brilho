@@ -121,3 +121,30 @@ src/
 
 `dist/` é o site completo. Netlify, Cloudflare Pages ou qualquer host estático —
 o `_headers` incluído já traz cache imutável para assets e CSP.
+
+## Medição dos cliques de marcação
+
+A marcação completa-se na Noona, noutro domínio, por isso o site não consegue ver a sua
+própria conversão. O que consegue ver é o clique que sai, e é isso que `functions/e.js`
+regista: uma linha por clique, com data e qual o botão. **Nada que identifique alguém** —
+sem IP, sem user agent, sem cookie — logo não há consentimento a pedir.
+
+Sem base de dados ligada o site funciona na mesma: a função responde 204 e a contagem é a
+que o painel do Cloudflare mostrar (só o total, e por poucos dias). Ligar o D1 é o que dá
+histórico permanente e a repartição por botão.
+
+**Configuração, uma vez, no painel do Cloudflare:**
+
+1. **D1** → criar base de dados, p. ex. `garagem-stats`
+2. Aplicar o esquema — colar `db/schema.sql` na consola do D1, ou:
+   `wrangler d1 execute garagem-stats --remote --file=db/schema.sql`
+3. Projeto Pages → **Settings** → **Bindings** → adicionar D1 com o nome **`DB`**
+4. Projeto Pages → **Settings** → **Variables** → `STATS_KEY` = uma chave à escolha
+5. Voltar a publicar (as ligações só valem a partir do deploy seguinte)
+
+**Ler os números:** `https://garagemdobrilho.pt/stats?k=<STATS_KEY>`, com `&dias=90` para
+mudar o período. Sem `STATS_KEY` definida o endereço devolve 404 em vez de abrir — uma
+configuração a meio esconde os dados, não os publica.
+
+O que sai são cliques, não marcações confirmadas. Quantos deles se tornam trabalho só a
+Noona sabe.
