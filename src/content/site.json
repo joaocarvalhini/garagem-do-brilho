@@ -31,9 +31,9 @@
       "locality": "Marinha Grande",
       "region": "Leiria",
       "country": "PT",
-      "maps": "https://www.google.com/maps/search/?api=1&query=R.+Sociedade+Recreativa+1+Maio+205%2C+2430-177+Marinha+Grande"
+      "maps": "https://maps.app.goo.gl/BTCgPpHSY5GYQiUv7"
     },
-    "geo": { "lat": null, "lng": null },
+    "geo": { "lat": 39.7289003, "lng": -8.9232929 },
     "hours": null,
     "closesAt": "19:00"
   },

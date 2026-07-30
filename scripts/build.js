@@ -70,12 +70,8 @@ function audit(site, lqip) {
   if (!site.contact.geo.lat) {
     warn.push('contact.geo is unknown — JSON-LD ships without geo coordinates for local search.');
   }
-  if (site.site.domain.includes('garagemdobrilho.pt')) {
-    warn.push(
-      'site.domain is an assumed domain and may not be registered — canonical/sitemap/JSON-LD ' +
-        'will all be wrong until this is confirmed as the real one.'
-    );
-  }
+  // garagemdobrilho.pt was confirmed by the client on 2026-07-30 as the registered
+  // domain, so the canonical/sitemap/JSON-LD host is no longer an assumption.
 
   const photos = Object.keys(lqip).length;
   if (photos === 0) {

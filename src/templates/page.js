@@ -119,6 +119,18 @@ function head({ t, site, lqip, preloadFonts, cssHash, jsHash }) {
       addressRegion: addr.region,
       addressCountry: addr.country,
     },
+    ...(contact.geo.lat != null && contact.geo.lng != null
+      ? {
+          geo: {
+            '@type': 'GeoCoordinates',
+            latitude: contact.geo.lat,
+            longitude: contact.geo.lng,
+          },
+        }
+      : {}),
+    // Ties the site to the Google Business Profile, which is what actually ranks
+    // in the local map pack.
+    ...(addr.maps ? { hasMap: addr.maps } : {}),
     areaServed: site.serviceArea.map((a) => ({ '@type': 'City', name: a })),
     sameAs: [contact.instagram, contact.facebook, contact.profile].filter(Boolean),
     potentialAction: {
