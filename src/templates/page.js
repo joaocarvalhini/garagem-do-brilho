@@ -407,7 +407,7 @@ function extras({ t, site }) {
         <p class="voucher__lead">${esc(t.voucher.lead)}</p>
         <p class="voucher__meta">${icon('ticket')} ${esc(site.voucher.kind)}</p>
         <div class="btn-row voucher__actions">
-          <a class="btn btn--primary" href="${site.contact.profile}" rel="noopener">${esc(t.voucher.cta)}${icon('arrowRight')}</a>
+          <a class="btn btn--primary" href="${site.voucher.url}" rel="noopener">${esc(t.voucher.cta)}${icon('arrowRight')}</a>
         </div>
         <p class="voucher__fine">${esc(t.voucher.note)}</p>
       </div>
