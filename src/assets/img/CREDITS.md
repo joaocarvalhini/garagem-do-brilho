@@ -7,13 +7,18 @@ Coloque os ficheiros em `src/assets/img/source/` com os nomes abaixo e corra
 
 | Ficheiro | Estado | Para que serve |
 |---|---|---|
-| `source/hero.jpg` | entregue | Hero — BMW 4 GC rear three-quarter after detail, gloss against blue sky. |
+| `source/hero-range-rover.jpg` | entregue | Hero, slide 1 — Range Rover Sport rear three-quarter (portrait: the same car from the other rear corner). |
+| `source/hero-porsche.jpg` | entregue | Hero, slide 2 — blue Porsche Macan, front three-quarter from the driver side. |
+| `source/hero-mercedes.jpg` | entregue | Hero, slide 3 — black Mercedes A-Class AMG Line, front. |
+| `source/hero.jpg` | entregue | Hero, slide 4 — BMW 4 GC rear three-quarter after detail, gloss against blue sky. |
+| `source/hero-tesla.jpg` | entregue | Hero, slide 5 — white Tesla Model S, front three-quarter. |
+| `source/hero-mx5.jpg` | entregue | Hero, slide 6 — red Mazda MX-5, bonnet gloss. |
 | `source/garagem.jpg` | entregue | CTA band — the same BMW mid-treatment, covered in snow foam. |
 | `source/danycad1.jpg` | entregue | About — Daniel. Faces outperform machines on this kind of page. |
-| `source/pack-simples.jpg` | entregue | Pack card — snow foam on the BMW, side view. |
-| `source/pack-texteis.jpg` | entregue | Pack card — fabric seat after steam cleaning, close up. |
-| `source/pack-peles.jpg` | entregue | Pack card — BMW leather cockpit after treatment. |
-| `source/pack-detalhada.jpg` | entregue | Pack card — side panel gloss with sun flare after detail. |
+| `source/pack-simples.jpg` | entregue | Pack card — black Mercedes A-Class AMG Line after a wash, whole car in frame (a clip poster frame, 1080x1920). |
+| `source/pack-texteis.jpg` | entregue | Pack card — Mazda MX-5 fabric seat after steam cleaning, whole seat in frame. |
+| `source/pack-peles.jpg` | entregue | Pack card — VW Golf R leather seat after cleaning and conditioning. |
+| `source/pack-detalhada.jpg` | entregue | Pack card — blue Porsche Macan front three-quarter, gloss and reflections (a clip poster frame, 1080x1920). |
 | `source/ba-01-durante.jpg` | entregue | Comparison — DURING. The BMW under snow foam. |
 | `source/ba-01-depois.jpg` | entregue | Comparison — AFTER. Same car, same spot, same angle, finished. |
 

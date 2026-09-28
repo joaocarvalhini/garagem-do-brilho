@@ -719,6 +719,68 @@ p {
   object-fit: cover;
 }
 
+/* Rotation. Every slide is stacked over the first; the first never fades, so a
+   crossfade between two later slides can never dip to the dark background. main.js
+   adds the later slides after load and moves .is-active between them. */
+.hero__media > picture {
+  position: absolute;
+  inset: 0;
+}
+
+.hero__media > picture + picture {
+  opacity: 0;
+  transition: opacity 1.2s var(--ease-in-out);
+}
+
+.hero__media > picture.is-active {
+  opacity: 1;
+}
+
+.hero__pause {
+  position: absolute;
+  right: var(--gutter);
+  /* Inside the hero's own bottom padding, so it never touches the pickup card. */
+  bottom: var(--s-2);
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-full);
+  background: rgb(7 9 13 / 55%);
+  backdrop-filter: blur(6px);
+  color: var(--mist-300);
+  cursor: pointer;
+  transition:
+    color var(--d-fast) var(--ease-out),
+    border-color var(--d-fast) var(--ease-out);
+}
+
+.hero__pause:hover {
+  color: var(--white);
+  border-color: var(--accent-ui);
+}
+
+.hero__pause[hidden] {
+  display: none;
+}
+
+.hero__pause svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.hero__pause svg + svg,
+.hero__pause[aria-pressed='true'] svg:first-child {
+  display: none;
+}
+
+.hero__pause[aria-pressed='true'] svg + svg {
+  display: block;
+}
+
 /* Fallback for the photo-less state: a slow blue sweep across black, like a light
    moving over a panel. It is not a placeholder box — if the photo never arrives, this
    still looks deliberate. */
@@ -805,13 +867,22 @@ p {
    to dropping the car off and fetching it back. So it sits in the hero, where the
    objection forms — but as a quiet chip, not a third button competing with the two
    above it. */
-.hero__pickup {
+/* Pickup and the maintenance programme sit side by side where there is room, stacked
+   on a phone. Same chip for both: they are the two standing offers the client wants
+   seen before anything else. */
+.hero__perks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3) var(--s-4);
+  margin-top: var(--s-6);
+}
+
+.hero__perk {
   position: relative;
   display: flex;
+  flex: 0 1 30rem;
   align-items: center;
   gap: var(--s-4);
-  max-width: 34rem;
-  margin-top: var(--s-6);
   padding: var(--s-4) var(--s-5);
   overflow: hidden;
   isolation: isolate;
@@ -830,7 +901,7 @@ p {
 /* Stacked rather than one running sentence. Inline, the detail wrapped onto a new line
    starting with a dash on a 375px screen, and the icon ended up floating against the
    middle of a four-line block. Two lines also give the promise a headline. */
-.hero__pickup-title {
+.hero__perk-title {
   display: block;
   color: #fff;
   font-size: var(--t-lg);
@@ -838,7 +909,7 @@ p {
   letter-spacing: -0.01em;
 }
 
-.hero__pickup-text {
+.hero__perk-text {
   display: block;
   margin-top: 0.15rem;
   color: var(--mist-100);
@@ -846,7 +917,7 @@ p {
 }
 
 /* The icon gets a filled disc so it reads as a badge, not as body punctuation. */
-.hero__pickup-icon {
+.hero__perk-icon {
   display: grid;
   flex: none;
   place-items: center;
@@ -857,7 +928,7 @@ p {
   color: var(--azul-300, var(--accent));
 }
 
-.hero__pickup-icon svg {
+.hero__perk-icon svg {
   width: 1.35rem;
   height: 1.35rem;
 }
@@ -866,7 +937,7 @@ p {
    visitor has not yet reached with the pointer, so a hover-only highlight would never
    fire exactly where it is needed most. Slow and widely spaced: it should catch the
    eye on the second pass, not strobe. */
-.hero__pickup::after {
+.hero__perk::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -879,10 +950,16 @@ p {
   );
   background-size: 260% 100%;
   background-position: 130% 0;
-  animation: pickup-sheen 6s var(--ease-in-out) 1.6s infinite;
+  animation: perk-sheen 6s var(--ease-in-out) 1.6s infinite;
 }
 
-@keyframes pickup-sheen {
+/* Half a cycle behind the first, so the light passes one chip and then the other
+   instead of both at once. */
+.hero__perk + .hero__perk::after {
+  animation-delay: 4.6s;
+}
+
+@keyframes perk-sheen {
   0% {
     background-position: 130% 0;
   }
@@ -895,7 +972,7 @@ p {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero__pickup::after {
+  .hero__perk::after {
     animation: none;
   }
 }
@@ -1393,9 +1470,11 @@ p {
   }
 }
 
+/* Three across, not four: with five add-ons, four columns strand the fifth on a row
+   of its own. */
 @media (min-width: 64rem) {
   .extras__grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -2370,6 +2449,33 @@ p {
   font-size: var(--t-sm);
 }
 
+/* Weekly hours: day on the left, times on the right, tabular so the columns of digits
+   line up down the list. */
+.hours {
+  display: grid;
+  gap: var(--s-1);
+  max-width: 20rem;
+  margin-top: var(--s-2);
+}
+
+.hours div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s-4);
+}
+
+.hours dt {
+  color: var(--text-muted);
+  font-size: var(--t-sm);
+}
+
+.hours dd {
+  margin: 0;
+  color: var(--text);
+  font-size: var(--t-sm);
+  font-variant-numeric: tabular-nums;
+}
+
 .areas {
   display: flex;
   flex-wrap: wrap;
@@ -2384,6 +2490,37 @@ p {
   color: var(--text-muted);
   font-size: var(--t-xs);
   list-style: none;
+}
+
+/* Booking — the Noona calendar in a frame. Noona's widget paints a dark page, so the
+   frame is a dark surface too and the load is not a flash of a different colour.
+   80vh is Noona's own recommendation; the floor stops it collapsing on a short
+   landscape phone. */
+.booking__frame {
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+}
+
+.booking__frame iframe {
+  display: block;
+  width: 100%;
+  height: 80vh;
+  min-height: 32rem;
+  border: 0;
+}
+
+.booking__fallback {
+  margin-top: var(--s-4);
+  color: var(--text-muted);
+  font-size: var(--t-sm);
+}
+
+.booking__fallback a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 .map {

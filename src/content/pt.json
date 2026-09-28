@@ -28,7 +28,10 @@
     "scroll": "Ver mais",
     "pickupStrong": "Recolha e entrega incluídas",
     "pickup": "Vamos buscar e entregamos o carro, sempre que precisar.",
-    "imgAlt": "Carro após tratamento de detalhe na Garagem do Brilho"
+    "loyaltyStrong": "Programa de manutenção",
+    "loyalty": "Depois de uma Completa ou Detalhada, as lavagens Simples têm desconto durante 1 mês.",
+    "imgAlt": "Carro após tratamento de detalhe na Garagem do Brilho",
+    "slidesPause": "Pausar a troca de fotografias"
   },
 
   "packs": {
@@ -164,7 +167,7 @@
       },
       {
         "q": "Quanto tempo fica o carro convosco?",
-        "a": "Depende do pack e do tamanho. Uma Simples são 150 minutos (240 num SUV). Uma Completa vai dos 300 aos 360 minutos. Uma Detalhada ocupa o dia: 480 minutos, em qualquer tamanho. A duração exata aparece na marcação."
+        "a": "Depende do pack e do tamanho. Uma Simples são 180 minutos (240 num SUV). Uma Completa vai dos 300 aos 360 minutos. Uma Detalhada ocupa o dia: 480 minutos, em qualquer tamanho. A duração exata aparece na marcação."
       },
       {
         "q": "O que é que a Detalhada tem que as Completas não têm?",
@@ -189,13 +192,22 @@
     "secondary": "Ver no Instagram"
   },
 
+  "booking": {
+    "eyebrow": "Marcação",
+    "title": "Escolha o dia e a hora.",
+    "lead": "Escolha o tipo de veículo, o pack e os complementos. A agenda é atualizada em tempo real: o horário que vê livre está mesmo livre.",
+    "frameTitle": "Marcação online da Garagem do Brilho",
+    "fallback": "A agenda não aparece?",
+    "fallbackLink": "Abrir a marcação numa página nova"
+  },
+
   "contact": {
     "eyebrow": "Contactos",
     "title": "Onde nos encontra.",
     "addressLabel": "Morada",
     "hoursLabel": "Horário",
-    "hoursUnknown": "Consulte os horários disponíveis na página de marcação.",
-    "closesAt": "Aberto até às {time}",
+    "days": ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"],
+    "closed": "Encerrado",
     "bookLabel": "Marcação",
     "bookValue": "Marcação online, em tempo real",
     "instagramLabel": "Instagram",

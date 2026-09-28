@@ -3,7 +3,7 @@
 Canonical business context for this repository. Required before any copy, SEO, or conversion work
 per `agents/business-analyst.md`. Load it instead of re-deriving from content files.
 
-**Last verified:** 2026-07-27
+**Last verified:** 2026-09-28 (address, prices, add-ons, voucher re-read from Noona)
 **Sources:** `src/content/site.json`, `src/content/pt.json`, `README.md`. Upstream facts originate
 from the client's Noona booking page and their shared Google Photos album, July 2026.
 **Review trigger:** quarterly per `workflows/maintenance.md`, or whenever Noona pricing changes.
@@ -21,7 +21,7 @@ Nothing in this file is invented. Facts are marked **Confirmed** (published by t
 | Tagline | Especialistas em Limpeza de Detalhe Automóvel | Confirmed |
 | Industry | Automotive detailing — hand car cleaning, not a wash tunnel | Confirmed |
 | Owner / operator | Daniel Cadete | Confirmed |
-| Base | R. Sociedade Recreativa 1 Maio 205, 2430-177 Marinha Grande, Leiria | Confirmed |
+| Base | R. da Paz 6A, Picassinos, 2430-449 Marinha Grande, Leiria (moved Sept 2026; was R. Sociedade Recreativa 1 Maio 205) | Confirmed |
 | Legal name, NIF | — | Unknown |
 | Years trading | — | Unknown |
 | Team size | Copy implies a single operator ("uma garagem", "quem trata do seu carro") | Unknown |
@@ -39,36 +39,37 @@ or a surcharge beyond a certain range.
 
 ## Services and yield
 
-Four packs across three vehicle tiers, plus four add-ons and one voucher. Prices are VAT-inclusive
-and mirrored from Noona.
+Four packs across three vehicle tiers, plus five add-ons on the site. Prices are VAT-inclusive
+and mirrored from Noona (re-read 2026-09-28; every pack went up 10–40 € from July). Noona also
+has a COMERCIAL category (vans, pickups) since Sept 2026 — **the client does not want it on
+the site**. The "3 Lavagens + 1 Grátis" voucher was withdrawn from Noona in Sept 2026; Noona
+pack descriptions mention a loyalty programme. **Confirmed** by the client: after a Completa or
+Detalhada, Simples maintenance washes are discounted for 1 month. Discount amount **Unknown**.
 
 **Derived — revenue per bay-hour** (price ÷ duration). Costs are **Unknown**, so this is yield,
 not margin. It is still the sharpest commercial signal available in the repo.
 
 | Offer | Citadino | Familiar | SUV & XL |
 |---|---|---|---|
-| Simples | 10.00 €/h | 10.00 €/h | 8.75 €/h |
-| Completa Têxteis *(featured)* | 12.00 €/h | 12.73 €/h | 13.33 €/h |
-| Completa Peles | 13.00 €/h | 13.64 €/h | 15.00 €/h |
-| Detalhada | 16.25 €/h | 18.75 €/h | **25.00 €/h** |
+| Simples | 11.67 €/h | 11.67 €/h | 11.25 €/h |
+| Completa Têxteis *(featured)* | 16.00 €/h | 16.36 €/h | 18.33 €/h |
+| Completa Peles | 17.00 €/h | 17.27 €/h | 20.00 €/h |
+| Detalhada | 21.25 €/h | 25.00 €/h | **30.00 €/h** |
 
 | Add-on | Duration | Price | Yield |
 |---|---|---|---|
-| Estofos | 120 min | 50–70 € | **25.00–35.00 €/h** |
+| Detalhe Exterior | 240 min | 90–120 € | **22.50–30.00 €/h** |
 | Motor | 60 min | 20 € | 20.00 €/h |
-| Exterior | 60 min | 15–20 € | 15.00–20.00 €/h |
-| Interior | 75 min | 15–25 € | 12.00–20.00 €/h |
-| Voucher (4 × Simples) | 600 min | 75 € | **7.50 €/h** |
+| Interior | 75 min | 20–25 € | 16.00–20.00 €/h |
+| Estofos | 240 min | 60–100 € | 15.00–25.00 €/h |
+| Exterior | 60 min | 15 € | 15.00 €/h |
 
-Three findings the client should see:
+Two findings the client should see:
 
-1. **Add-ons out-yield most packs.** Estofos alone returns two to three times a Simples per hour of
-   bay time. They are currently presented last, after the voucher.
-2. **Detalhada SUV is the best hour in the business** at 25 €/h — nearly three times a Simples SUV.
+1. **Detalhada SUV is the best hour in the business** at 30 €/h — nearly three times a Simples.
    It is not the featured pack.
-3. **The voucher is the lowest-yield offer on the menu** at 7.50 €/h, and it discounts the pack that
-   already yields least. It buys repeat custom; whether that trade is worth it depends on cost and
-   occupancy data the repo does not hold. Worth asking before promoting it further.
+2. **Simples is now the only offer under 15 €/h.** The September price rise lifted everything
+   else clear of it; it is the natural entry product, not a volume one.
 
 Ranking by demand is **Unknown** — "Mais escolhido" on Completa Têxteis is a marketing label in
 `site.json`, not measured data. Ask Noona for actual booking counts per pack.
@@ -152,7 +153,8 @@ Batch these into one conversation, highest value first.
 2. Can we get a photograph of you working? It is the biggest missing conversion asset.
 3. Which packs actually sell, from the Noona booking history?
 4. What does an hour in the garage cost you to run — so yield can become margin?
-5. Full weekly opening hours. The site can only say "aberto até às 19:00".
+5. ~~Full weekly opening hours~~ — answered 2026-09-28 from Noona: Mon, Tue, Thu, Fri 08–19;
+   Wed 08–17; Sat 08–12; Sun closed.
 6. Is `garagemdobrilho.pt` registered and yours? It is assumed throughout the build.
 7. NIF and GPS coordinates, to complete the `LocalBusiness` structured data.
 8. Is there a distance limit or surcharge on pickup and delivery?

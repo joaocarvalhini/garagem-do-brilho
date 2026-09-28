@@ -33,21 +33,80 @@ const FORCE = process.argv.includes('--force');
 const AR = { hero: 16 / 9, band: 21 / 9, card: 4 / 3, pair: 4 / 5, square: 1 };
 
 /**
- * name -> { src, ar, widths, focal, note }
+ * name -> { src, ar, widths, focal, note, portrait? }
  *
  * `focal` is the vertical centre of the crop as a 0..1 fraction. Car photography is
  * usually shot low and wide, so the subject sits below centre — 0.5 is a decent
  * default here, unlike the tall-subject case where it decapitates things.
+ *
+ * `portrait` ({ src?, focal, widths }) adds a 9:16 set, written as `${name}-p-${w}`,
+ * that page.js serves to portrait screens. A phone showing a 16:9 hero with
+ * object-fit: cover only ever sees its middle quarter — usually a door panel. `src`
+ * defaults to the landscape source; give it its own file when a different shot of the
+ * same car frames better upright.
  */
+const PORTRAIT = { ar: 9 / 16, widths: [640, 1080] };
+
 const IMAGES = {
   // The photographs below came out of the client's own Google Photos album
-  // (the "Coches" share, July 2026) — real cars, real driveway, nothing staged.
+  // (the "Coches" share, July and September 2026) — real cars, real driveway,
+  // nothing staged.
+  //
+  // The hero rotates through the premium cars the client has done. The first entry is
+  // the one that paints first (and is the LCP image); order here is the order on
+  // screen — keep page.js HERO_SLIDES in step.
+  //
+  // Porsche, Mercedes and Tesla exist only as the client's short clips, so their
+  // sources are 1080x1920 poster frames: upright they are the whole car at full
+  // resolution, and the landscape set stops at 1080 rather than claim a 1920 it
+  // does not have.
+  'hero-range-rover': {
+    src: 'hero-range-rover.jpg',
+    ar: AR.hero,
+    widths: [768, 1280, 1920],
+    focal: 0.5,
+    note: 'Hero, slide 1 — Range Rover Sport rear three-quarter (portrait: the same car from the other rear corner).',
+    portrait: { src: 'hero-range-rover-p.jpg', focal: 0.5 },
+  },
+  'hero-porsche': {
+    src: 'hero-porsche.jpg',
+    ar: AR.hero,
+    widths: [768, 1080],
+    focal: 0.55,
+    note: 'Hero, slide 2 — blue Porsche Macan, front three-quarter from the driver side.',
+    portrait: { focal: 0.5 },
+  },
+  'hero-mercedes': {
+    src: 'hero-mercedes.jpg',
+    ar: AR.hero,
+    widths: [768, 1080],
+    focal: 0.5,
+    note: 'Hero, slide 3 — black Mercedes A-Class AMG Line, front.',
+    portrait: { focal: 0.5 },
+  },
   'hero-car': {
     src: 'hero.jpg',
     ar: AR.hero,
     widths: [768, 1280, 1920],
     focal: 0.42,
-    note: 'Hero — BMW 4 GC rear three-quarter after detail, gloss against blue sky.',
+    note: 'Hero, slide 4 — BMW 4 GC rear three-quarter after detail, gloss against blue sky.',
+    portrait: { focal: 0.5 },
+  },
+  'hero-tesla': {
+    src: 'hero-tesla.jpg',
+    ar: AR.hero,
+    widths: [768, 1080],
+    focal: 0.5,
+    note: 'Hero, slide 5 — white Tesla Model S, front three-quarter.',
+    portrait: { focal: 0.5 },
+  },
+  'hero-mx5': {
+    src: 'hero-mx5.jpg',
+    ar: AR.hero,
+    widths: [768, 1280, 1920],
+    focal: 0.3,
+    note: 'Hero, slide 6 — red Mazda MX-5, bonnet gloss.',
+    portrait: { focal: 0.5 },
   },
   'band-garage': {
     src: 'garagem.jpg',
@@ -72,29 +131,31 @@ const IMAGES = {
     src: 'pack-simples.jpg',
     ar: AR.card,
     widths: [480, 960],
-    focal: 0.45,
-    note: 'Pack card — snow foam on the BMW, side view.',
+    focal: 0.35,
+    note: 'Pack card — black Mercedes A-Class AMG Line after a wash, whole car in frame (a clip poster frame, 1080x1920).',
   },
+  // Têxteis and Peles are the poster frames of two of the client's clips (1080x1920),
+  // which is still wider than the 960px card rendition needs.
   'pack-completa-texteis': {
     src: 'pack-texteis.jpg',
     ar: AR.card,
     widths: [480, 960],
-    focal: 0.45,
-    note: 'Pack card — fabric seat after steam cleaning, close up.',
+    focal: 0.5,
+    note: 'Pack card — Mazda MX-5 fabric seat after steam cleaning, whole seat in frame.',
   },
   'pack-completa-peles': {
     src: 'pack-peles.jpg',
     ar: AR.card,
     widths: [480, 960],
-    focal: 0.45,
-    note: 'Pack card — BMW leather cockpit after treatment.',
+    focal: 0.2,
+    note: 'Pack card — VW Golf R leather seat after cleaning and conditioning.',
   },
   'pack-detalhada': {
     src: 'pack-detalhada.jpg',
     ar: AR.card,
     widths: [480, 960],
     focal: 0.45,
-    note: 'Pack card — side panel gloss with sun flare after detail.',
+    note: 'Pack card — blue Porsche Macan front three-quarter, gloss and reflections (a clip poster frame, 1080x1920).',
   },
   // The comparison pair: same BMW, same driveway, same angle, same light — snow foam
   // on, then finished. Matched framing is the whole point; an earlier attempt paired a
@@ -123,7 +184,7 @@ const IMAGES = {
 // resolution and tolerate more compression.
 function qualityFor(width) {
   if (width >= 1600) return 52;
-  if (width >= 1100) return 58;
+  if (width >= 1000) return 58;
   return 68;
 }
 
@@ -162,22 +223,38 @@ async function main() {
     }
     const meta = await sharp(input).metadata();
 
-    for (const w of spec.widths) {
-      for (const fmt of ['avif', 'webp']) {
-        const file = path.join(OUT, `${name}-${w}.${fmt}`);
-        if (fs.existsSync(file) && !FORCE) {
-          bytes += fs.statSync(file).size;
-          continue;
+    const sets = [{ prefix: name, input, meta, ar: spec.ar, widths: spec.widths, focal: spec.focal }];
+    if (spec.portrait) {
+      const pInput = spec.portrait.src ? path.join(SRC, spec.portrait.src) : input;
+      if (!fs.existsSync(pInput)) throw new Error(`${name}: portrait source ${spec.portrait.src} missing`);
+      sets.push({
+        prefix: `${name}-p`,
+        input: pInput,
+        meta: pInput === input ? meta : await sharp(pInput).metadata(),
+        ar: PORTRAIT.ar,
+        widths: PORTRAIT.widths,
+        focal: spec.portrait.focal,
+      });
+    }
+
+    for (const set of sets) {
+      for (const w of set.widths) {
+        for (const fmt of ['avif', 'webp']) {
+          const file = path.join(OUT, `${set.prefix}-${w}.${fmt}`);
+          if (fs.existsSync(file) && !FORCE) {
+            bytes += fs.statSync(file).size;
+            continue;
+          }
+          const pipe = await cropResize(set.input, set.meta, set.ar, w, set.focal);
+          const buf = await (fmt === 'avif'
+            ? pipe.avif({ quality: qualityFor(w), effort: 6 })
+            : pipe.webp({ quality: qualityFor(w) })
+          ).toBuffer();
+          fs.writeFileSync(file, buf);
+          count++;
+          bytes += buf.length;
+          console.log(`  ${set.prefix}-${w}.${fmt}  ${(buf.length / 1024).toFixed(0)} KB`);
         }
-        const pipe = await cropResize(input, meta, spec.ar, w, spec.focal);
-        const buf = await (fmt === 'avif'
-          ? pipe.avif({ quality: qualityFor(w), effort: 6 })
-          : pipe.webp({ quality: qualityFor(w) })
-        ).toBuffer();
-        fs.writeFileSync(file, buf);
-        count++;
-        bytes += buf.length;
-        console.log(`  ${name}-${w}.${fmt}  ${(buf.length / 1024).toFixed(0)} KB`);
       }
     }
 

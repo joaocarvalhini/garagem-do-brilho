@@ -60,8 +60,8 @@ function audit(site, lqip) {
   }
   if (!site.contact.hours) {
     warn.push(
-      `contact.hours is unknown — only "aberto até ${site.contact.closesAt}" (from Noona) is shown. ` +
-        'Full weekly hours would also feed the LocalBusiness JSON-LD.'
+      'contact.hours is unknown — the contact section shows no opening hours and the ' +
+        'LocalBusiness JSON-LD ships without openingHoursSpecification. Copy them from Noona.'
     );
   }
   if (!site.company.nif) {
@@ -154,13 +154,16 @@ Sitemap: ${site.site.domain}/sitemap.xml`;
  * already serves every byte of this site — so it exposes the visitor to no party that
  * was not already handling the request. Nothing is loaded from there until that toggle
  * is turned on. Google Analytics would not qualify on either count.
+ *
+ * frame-src admits one origin: the client's Noona calendar, embedded in the booking
+ * section (lazy-loaded, so nothing is requested from it until a visitor gets there).
  */
 const headers = `/*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: SAMEORIGIN
   Permissions-Policy: geolocation=(), microphone=(), camera=(), interest-cohort=()
-  Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' static.cloudflareinsights.com; connect-src 'self' cloudflareinsights.com; font-src 'self'; form-action 'self'; frame-ancestors 'self'; base-uri 'self'
+  Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' static.cloudflareinsights.com; connect-src 'self' cloudflareinsights.com; frame-src https://noona.pt; font-src 'self'; form-action 'self'; frame-ancestors 'self'; base-uri 'self'
 
 /assets/fonts/*
   Cache-Control: public, max-age=31536000, immutable

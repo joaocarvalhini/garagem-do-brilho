@@ -49,6 +49,25 @@ const dur = (min) => {
 const fill = (tpl, vars) => tpl.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? `{${k}}`);
 
 /**
+ * contact.hours is seven entries, Monday first — the order Noona stores them in —
+ * each { opens, closes } or null for closed. Runs of consecutive days with the same
+ * hours collapse into one row, so the page reads "Segunda e terça" rather than listing
+ * seven lines for what is really four different schedules.
+ */
+const hourGroups = (hours) => {
+  const same = (a, b) => (a && b ? a.opens === b.opens && a.closes === b.closes : a === b);
+  const groups = [];
+  hours.forEach((slot, day) => {
+    const last = groups[groups.length - 1];
+    if (last && same(last.slot, slot)) last.to = day;
+    else groups.push({ from: day, to: day, slot });
+  });
+  return groups;
+};
+
+const SCHEMA_DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+/**
  * Responsive <picture> from the processed image set, or null when the photo was never
  * supplied — callers decide the fallback, because the right fallback differs per slot.
  */
@@ -64,14 +83,26 @@ const fill = (tpl, vars) => tpl.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? `{${k
 function picture(name, spec, { lqip, alt, sizes, eager = false, lazy = true, className = '' }) {
   if (!lqip[name]) return null;
   const widths = spec.widths;
-  const srcset = (fmt) => widths.map((w) => `/assets/img/${name}-${w}.${fmt} ${w}w`).join(', ');
+  const srcset = (fmt, set = name, ws = widths) =>
+    ws.map((w) => `/assets/img/${set}-${w}.${fmt} ${w}w`).join(', ');
   const largest = widths[widths.length - 1];
   const loadAttrs = eager
     ? 'fetchpriority="high"'
     : lazy
       ? 'loading="lazy" decoding="async"'
       : 'decoding="async"';
+  // Portrait screens get the upright crop first, when the image has one (the hero):
+  // the browser takes the first <source> whose media and type both match.
+  const portrait = spec.portrait
+    ? ['avif', 'webp']
+        .map(
+          (fmt) =>
+            `<source media="(orientation: portrait)" type="image/${fmt}" srcset="${srcset(fmt, `${name}-p`, spec.portrait.widths)}" sizes="${sizes}">`
+        )
+        .join('\n    ')
+    : '';
   return `<picture${className ? ` class="${className}"` : ''}>
+    ${portrait}
     <source type="image/avif" srcset="${srcset('avif')}" sizes="${sizes}">
     <source type="image/webp" srcset="${srcset('webp')}" sizes="${sizes}">
     <img src="/assets/img/${name}-${largest}.webp" alt="${esc(alt)}"
@@ -84,7 +115,14 @@ function picture(name, spec, { lqip, alt, sizes, eager = false, lazy = true, cla
 /* Image specs mirrored from scripts/process-images.js — only what the template needs
  * to write srcset/sizes. If widths change there, change them here. */
 const IMG = {
-  'hero-car': { widths: [768, 1280, 1920], ar: 16 / 9 },
+  // Hero slides carry a 9:16 set for portrait screens (`portrait`). The clip-sourced
+  // ones stop at 1080 because that is all the source has.
+  'hero-range-rover': { widths: [768, 1280, 1920], ar: 16 / 9, portrait: { widths: [640, 1080] } },
+  'hero-porsche': { widths: [768, 1080], ar: 16 / 9, portrait: { widths: [640, 1080] } },
+  'hero-mercedes': { widths: [768, 1080], ar: 16 / 9, portrait: { widths: [640, 1080] } },
+  'hero-car': { widths: [768, 1280, 1920], ar: 16 / 9, portrait: { widths: [640, 1080] } },
+  'hero-tesla': { widths: [768, 1080], ar: 16 / 9, portrait: { widths: [640, 1080] } },
+  'hero-mx5': { widths: [768, 1280, 1920], ar: 16 / 9, portrait: { widths: [640, 1080] } },
   'band-garage': { widths: [1024, 1600, 2400], ar: 21 / 9 },
   'about-owner': { widths: [480, 960], ar: 1 },
   'pack-simples': { widths: [480, 960], ar: 4 / 3 },
@@ -95,13 +133,22 @@ const IMG = {
   'ba-01-depois': { widths: [640, 1280], ar: 4 / 5 },
 };
 
+/* The hero's rotation, in screen order. The first is the LCP image and the only one
+ * in the initial HTML; see hero(). */
+const HERO_SLIDES = ['hero-range-rover', 'hero-porsche', 'hero-mercedes', 'hero-car', 'hero-tesla', 'hero-mx5'];
+
+/* Every "Marcar" button on the page leads here, to the embedded Noona calendar. The
+ * direct Noona link survives in the booking section, the footer and the JSON-LD. */
+const BOOK = '#marcar';
+
 /* ---------- sections ---------- */
 
 function head({ t, site, lqip, preloadFonts, cssHash, jsHash }) {
   const { company, contact } = site;
   const addr = contact.address;
 
-  // LocalBusiness JSON-LD. Only facts that are actually known — no invented hours.
+  // LocalBusiness JSON-LD. Only facts that are actually known — hours only once they
+  // come from Noona, never invented.
   // An AutoWash with a booking URL is exactly what local search wants from this
   // business.
   const jsonld = {
@@ -131,6 +178,18 @@ function head({ t, site, lqip, preloadFonts, cssHash, jsHash }) {
     // Ties the site to the Google Business Profile, which is what actually ranks
     // in the local map pack.
     ...(addr.maps ? { hasMap: addr.maps } : {}),
+    ...(contact.hours
+      ? {
+          openingHoursSpecification: hourGroups(contact.hours)
+            .filter((g) => g.slot)
+            .map((g) => ({
+              '@type': 'OpeningHoursSpecification',
+              dayOfWeek: SCHEMA_DAYS.slice(g.from, g.to + 1),
+              opens: g.slot.opens,
+              closes: g.slot.closes,
+            })),
+        }
+      : {}),
     areaServed: site.serviceArea.map((a) => ({ '@type': 'City', name: a })),
     sameAs: [contact.instagram, contact.facebook, contact.profile].filter(Boolean),
     potentialAction: {
@@ -221,7 +280,7 @@ function header({ t, site }) {
     <nav class="nav" aria-label="Principal">
       ${links.map(([id, label]) => `<a class="nav__link" data-spy href="#${id}">${esc(label)}</a>`).join('\n      ')}
     </nav>
-    <a class="btn btn--primary header__cta" href="${site.contact.booking}" rel="noopener">${esc(t.nav.book)}${icon('arrowRight')}</a>
+    <a class="btn btn--primary header__cta" href="${BOOK}">${esc(t.nav.book)}${icon('arrowRight')}</a>
     <button class="burger" data-burger aria-expanded="false" aria-controls="menu" aria-label="${esc(t.nav.menuOpen)}">
       ${icon('menu')}
     </button>
@@ -239,18 +298,39 @@ function header({ t, site }) {
       .join('\n    ')}
   </nav>
   <div class="container menu__foot">
-    <a class="btn btn--primary btn--lg btn--block" href="${site.contact.booking}" rel="noopener">${esc(t.nav.book)}${icon('arrowRight')}</a>
+    <a class="btn btn--primary btn--lg btn--block" href="${BOOK}">${esc(t.nav.book)}${icon('arrowRight')}</a>
   </div>
 </div>`;
 }
 
 function hero({ t, site, lqip }) {
-  const img = picture('hero-car', IMG['hero-car'], {
-    lqip,
-    alt: t.hero.imgAlt,
-    sizes: '100vw',
-    eager: true,
-  });
+  const [first, ...rest] = HERO_SLIDES.filter((name) => lqip[name]);
+  const img =
+    first &&
+    picture(first, IMG[first], {
+      lqip,
+      alt: t.hero.imgAlt,
+      sizes: '100vw',
+      eager: true,
+    });
+
+  /* The other slides ship inert, inside a <template>: nothing in there is fetched until
+     main.js clones it in after the page has loaded, so the rotation never competes with
+     the first photo for bandwidth. Without JS the hero is simply the first photo. They
+     carry no alt text — the first slide already describes the hero, and a screen reader
+     announcing a new car every few seconds would be noise. */
+  const slides = rest
+    .map((name) => picture(name, IMG[name], { lqip, alt: '', sizes: '100vw', lazy: false }))
+    .join('\n');
+  const media = img
+    ? `<div class="hero__media" data-parallax>${img}${slides ? `<template data-hero-slides>${slides}</template>` : ''}</div>`
+    : '<div class="hero__glow" aria-hidden="true"></div>';
+  // Anything that moves for more than five seconds needs a way to stop it. Hidden until
+  // main.js actually starts the rotation. A toggle keeps one label and reports its
+  // state through aria-pressed; the icon follows the state in CSS.
+  const pause = slides
+    ? `<button class="hero__pause" type="button" data-hero-pause hidden aria-pressed="false" aria-label="${esc(t.hero.slidesPause)}">${icon('pause')}${icon('play')}</button>`
+    : '';
 
   // The title splits on the last two words so "de novo" lands in italic blue — the
   // shine inside the sentence.
@@ -258,22 +338,32 @@ function hero({ t, site, lqip }) {
   const tail = words.splice(-3).join(' ');
 
   return `<section class="hero" id="top">
-  ${img ? `<div class="hero__media" data-parallax>${img}</div>` : '<div class="hero__glow" aria-hidden="true"></div>'}
+  ${media}
+  ${pause}
   <div class="container hero__inner">
     <p class="eyebrow">${esc(t.hero.eyebrow)}</p>
     <h1 class="hero__title">${esc(words.join(' '))} <em>${esc(tail)}</em></h1>
     <p class="hero__lead">${esc(t.hero.lead)}</p>
     <div class="btn-row hero__actions">
-      <a class="btn btn--primary btn--lg" href="${site.contact.booking}" rel="noopener">${esc(t.hero.ctaPrimary)}${icon('arrowRight')}</a>
+      <a class="btn btn--primary btn--lg" href="${BOOK}">${esc(t.hero.ctaPrimary)}${icon('arrowRight')}</a>
       <a class="btn btn--ghost btn--lg" href="#packs">${esc(t.hero.ctaSecondary)}</a>
     </div>
-    <p class="hero__pickup">
-      <span class="hero__pickup-icon">${icon('truck')}</span>
-      <span>
-        <strong class="hero__pickup-title">${esc(t.hero.pickupStrong)}</strong>
-        <span class="hero__pickup-text">${esc(t.hero.pickup)}</span>
-      </span>
-    </p>
+    <div class="hero__perks">
+      <p class="hero__perk">
+        <span class="hero__perk-icon">${icon('truck')}</span>
+        <span>
+          <strong class="hero__perk-title">${esc(t.hero.pickupStrong)}</strong>
+          <span class="hero__perk-text">${esc(t.hero.pickup)}</span>
+        </span>
+      </p>
+      <p class="hero__perk">
+        <span class="hero__perk-icon">${icon('ticket')}</span>
+        <span>
+          <strong class="hero__perk-title">${esc(t.hero.loyaltyStrong)}</strong>
+          <span class="hero__perk-text">${esc(t.hero.loyalty)}</span>
+        </span>
+      </p>
+    </div>
   </div>
   <span class="hero__scroll" aria-hidden="true">${esc(t.hero.scroll)}</span>
 </section>`;
@@ -340,7 +430,7 @@ function packs({ t, site, lqip }) {
         ${includes.map((s) => `<li>${icon('check')}<span>${esc(s)}</span></li>`).join('\n        ')}
       </ul>
       <p class="pack__foot">
-        <a class="btn btn--ghost btn--block" href="${site.contact.booking}" rel="noopener">${esc(t.packs.cta)}</a>
+        <a class="btn btn--ghost btn--block" href="${BOOK}">${esc(t.packs.cta)}</a>
       </p>
     </article>`;
   };
@@ -362,7 +452,7 @@ function packs({ t, site, lqip }) {
     <p class="packs__note">${esc(t.pricing.note)}</p>
     <p class="visually-hidden" role="status" aria-live="polite" data-price-live></p>
     <div class="packs__cta" data-reveal>
-      <a class="btn btn--primary btn--lg" href="${site.contact.booking}" rel="noopener">${esc(t.pricing.cta)}${icon('arrowRight')}</a>
+      <a class="btn btn--primary btn--lg" href="${BOOK}">${esc(t.pricing.cta)}${icon('arrowRight')}</a>
     </div>
   </div>
 </section>`;
@@ -373,6 +463,35 @@ function extras({ t, site }) {
     x.priceFrom === x.priceTo
       ? fill(t.extras.priceFixed, { price: eur(x.priceFrom) })
       : fill(t.extras.priceRange, { from: eur(x.priceFrom), to: eur(x.priceTo) });
+
+  // null when the client has no voucher on sale — an offer that 404s on Noona is worse
+  // than no offer, so the block disappears rather than linking to nothing.
+  const v = site.voucher;
+  const voucher = v
+    ? `<div class="voucher" style="margin-top:var(--s-8)" data-reveal>
+      <div>
+        <p class="eyebrow">${esc(t.voucher.eyebrow)}</p>
+        <h3 class="voucher__title">${esc(t.voucher.title)}</h3>
+        <p class="voucher__lead">${esc(t.voucher.lead)}</p>
+        <p class="voucher__meta">${icon('ticket')} ${esc(v.kind)}</p>
+        <div class="btn-row voucher__actions">
+          <a class="btn btn--primary" href="${v.url}" rel="noopener">${esc(t.voucher.cta)}${icon('arrowRight')}</a>
+        </div>
+        <p class="voucher__fine">${esc(t.voucher.note)}</p>
+      </div>
+      <div class="voucher__figures">
+        <span class="voucher__col">
+          <span class="voucher__k">${esc(t.voucher.before)}</span>
+          <span class="voucher__before">${eur(v.priceBefore)}</span>
+        </span>
+        <span class="voucher__col">
+          <span class="voucher__k">${esc(t.voucher.now)}</span>
+          <span class="voucher__now">${eur(v.price)}</span>
+        </span>
+        <span class="voucher__save">${esc(fill(t.voucher.save, { percent: v.savePercent }))}</span>
+      </div>
+    </div>`
+    : '';
 
   return `<section class="section section--alt">
   <div class="container">
@@ -397,32 +516,10 @@ function extras({ t, site }) {
       .join('\n      ')}
     </div>
     <div class="btn-row" style="margin-top:var(--s-6)" data-reveal>
-      <a class="btn btn--ghost" href="${site.contact.booking}" rel="noopener">${esc(t.extras.cta)}${icon('arrowRight')}</a>
+      <a class="btn btn--ghost" href="${BOOK}">${esc(t.extras.cta)}${icon('arrowRight')}</a>
     </div>
 
-    <div class="voucher" style="margin-top:var(--s-8)" data-reveal>
-      <div>
-        <p class="eyebrow">${esc(t.voucher.eyebrow)}</p>
-        <h3 class="voucher__title">${esc(t.voucher.title)}</h3>
-        <p class="voucher__lead">${esc(t.voucher.lead)}</p>
-        <p class="voucher__meta">${icon('ticket')} ${esc(site.voucher.kind)}</p>
-        <div class="btn-row voucher__actions">
-          <a class="btn btn--primary" href="${site.voucher.url}" rel="noopener">${esc(t.voucher.cta)}${icon('arrowRight')}</a>
-        </div>
-        <p class="voucher__fine">${esc(t.voucher.note)}</p>
-      </div>
-      <div class="voucher__figures">
-        <span class="voucher__col">
-          <span class="voucher__k">${esc(t.voucher.before)}</span>
-          <span class="voucher__before">${eur(site.voucher.priceBefore)}</span>
-        </span>
-        <span class="voucher__col">
-          <span class="voucher__k">${esc(t.voucher.now)}</span>
-          <span class="voucher__now">${eur(site.voucher.price)}</span>
-        </span>
-        <span class="voucher__save">${esc(fill(t.voucher.save, { percent: site.voucher.savePercent }))}</span>
-      </div>
-    </div>
+    ${voucher}
   </div>
 </section>`;
 }
@@ -687,9 +784,38 @@ function band({ t, site, lqip }) {
     <h2 class="band__title">${esc(t.cta.title)}</h2>
     <p class="band__lead">${esc(t.cta.lead)}</p>
     <div class="btn-row band__actions">
-      <a class="btn btn--light btn--lg" href="${site.contact.booking}" rel="noopener">${esc(t.cta.primary)}${icon('arrowRight')}</a>
+      <a class="btn btn--light btn--lg" href="${BOOK}">${esc(t.cta.primary)}${icon('arrowRight')}</a>
       <a class="btn btn--ghost btn--lg" href="${site.contact.instagram}" rel="noopener">${icon('instagram')}${esc(t.cta.secondary)}</a>
     </div>
+  </div>
+</section>`;
+}
+
+/**
+ * The client's Noona calendar, embedded — the booking happens without leaving the site.
+ *
+ * loading="lazy" keeps noona.pt out of the page load entirely: the frame (and whatever
+ * Noona loads inside it) is only fetched once a visitor scrolls or jumps near it, which
+ * preserves the site's no-third-party-requests-on-arrival rule for everyone who never
+ * gets this far. The CSP allows exactly this origin as a frame-src (scripts/build.js).
+ *
+ * Sandboxed as far as a paid booking flow allows: scripts, forms, its own origin and
+ * popups (sign-in, payment) stay on; the one thing withheld is navigating this page away
+ * without the visitor having clicked something.
+ */
+function booking({ t, site }) {
+  return `<section class="section section--alt booking" id="marcar">
+  <div class="container">
+    <div class="section__head" data-reveal>
+      <p class="eyebrow">${esc(t.booking.eyebrow)}</p>
+      <h2 class="section__title">${esc(t.booking.title)}</h2>
+      <p class="section__lead">${esc(t.booking.lead)}</p>
+    </div>
+    <div class="booking__frame">
+      <iframe src="${esc(site.contact.bookingEmbed)}" title="${esc(t.booking.frameTitle)}" loading="lazy"
+        allow="payment" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"></iframe>
+    </div>
+    <p class="booking__fallback">${esc(t.booking.fallback)} <a href="${site.contact.booking}" rel="noopener">${esc(t.booking.fallbackLink)}</a></p>
   </div>
 </section>`;
 }
@@ -723,19 +849,29 @@ function contact({ t, site }) {
             <p class="info__sub">${esc(addr.region)}, Portugal</p>
           </div>
         </div>
-        <div class="info__row">
+        ${c.hours ? `<div class="info__row">
           <span class="info__icon">${icon('clock')}</span>
           <div>
             <p class="info__k">${esc(t.contact.hoursLabel)}</p>
-            <p class="info__v">${esc(fill(t.contact.closesAt, { time: c.closesAt }))}</p>
-            <p class="info__sub">${esc(t.contact.hoursUnknown)}</p>
+            <dl class="hours">
+              ${hourGroups(c.hours)
+      .map(({ from, to, slot }) => {
+        const d = t.contact.days;
+        const days =
+          from === to
+            ? d[from]
+            : `${d[from]} ${to - from === 1 ? 'e' : 'a'} ${d[to].toLocaleLowerCase('pt-PT')}`;
+        return `<div><dt>${esc(days)}</dt><dd>${slot ? `${slot.opens}–${slot.closes}` : esc(t.contact.closed)}</dd></div>`;
+      })
+      .join('\n              ')}
+            </dl>
           </div>
-        </div>
+        </div>` : ''}
         <div class="info__row">
           <span class="info__icon">${icon('calendar')}</span>
           <div>
             <p class="info__k">${esc(t.contact.bookLabel)}</p>
-            <p class="info__v"><a href="${c.booking}" rel="noopener">${esc(t.contact.bookValue)}</a></p>
+            <p class="info__v"><a href="${BOOK}">${esc(t.contact.bookValue)}</a></p>
           </div>
         </div>
         ${c.whatsapp ? `<div class="info__row">
@@ -832,7 +968,7 @@ function footer({ t, site }) {
 
 <div class="bar" data-bar>
   <a class="btn btn--ghost" href="#packs">${esc(t.bar.prices)}</a>
-  <a class="btn btn--primary" href="${site.contact.booking}" rel="noopener">${esc(t.bar.book)}${icon('arrowRight')}</a>
+  <a class="btn btn--primary" href="${BOOK}">${esc(t.bar.book)}${icon('arrowRight')}</a>
 </div>`;
 }
 
@@ -859,6 +995,7 @@ ${about(ctx)}
 ${reviews(ctx)}
 ${faq(ctx)}
 ${band(ctx)}
+${booking(ctx)}
 ${contact(ctx)}
 </main>
 ${footer(ctx)}

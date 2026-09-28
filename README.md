@@ -4,7 +4,8 @@ Site de página única (pt-PT) para a **Garagem do Brilho**, *Especialistas em L
 de Detalhe Automóvel* — Marinha Grande, Leiria.
 
 HTML estático. Sem framework, sem dependências de runtime, sem cookies, sem trackers.
-Uma página, ~10KB de JavaScript, e um build que corre em menos de 50ms.
+A única exceção é a agenda da Noona embebida na secção de marcação, que só carrega
+quando o visitante chega lá. Uma página, ~10KB de JavaScript, e um build que corre em menos de 50ms.
 
 ```bash
 npm install     # sharp, apenas em build-time — nada disto chega ao browser
@@ -17,20 +18,40 @@ npm run dev     # build + servidor local em http://localhost:4322
 ## De onde veio o conteúdo
 
 Tudo o que está no site é da própria empresa, retirado da página Noona
-([noona.pt/garagemdobrilho](https://noona.pt/garagemdobrilho)) em julho de 2026:
+([noona.pt/garagemdobrilho](https://noona.pt/garagemdobrilho)) em julho de 2026 e
+atualizado a 2026-09-28 (nova morada, novos preços):
 
 - **Packs e preços** — os quatro packs (Simples, Completa Têxteis, Completa Peles,
   Detalhada) nos três escalões (Citadino / Familiar / SUV & XL), com durações e
   listas de inclusões exatamente como estão na marcação — incluindo as diferenças
   por escalão (o Simples de SUV é aspiração, o Detalhada Familiar inclui polimento).
-- **Complementos** — Limpeza Interior, Lavagem Exterior, Estofos, Lavagem do Motor.
-- **Voucher** — 3 Lavagens + 1 Grátis (4 sessões, 100€ → 75€).
+- **Complementos** — os serviços de "Personalizado" na Noona (Limpeza Interior, Lavagem
+  Exterior, Estofos, Detalhe Exterior) mais a Lavagem do Motor. Os restantes complementos
+  da Noona (faróis, selantes, forros…) ficam só na marcação, como em julho.
+- **Categoria COMERCIAL** — existe na Noona desde setembro de 2026, mas o cliente pediu
+  que **não** apareça no site. Não é esquecimento.
+- **Voucher** — o "3 Lavagens + 1 Grátis" foi retirado da Noona (setembro de 2026);
+  `voucher` está a `null` em `site.json` e o bloco não é renderizado. Para voltar, basta
+  repor o objeto (está no histórico do git) com o link do novo voucher.
 - **Posicionamento** — "Atenção ao pormenor", "Qualidade Premium", "Spa Day",
   "Devolvemos o aspeto de novo ao seu carro" são frases deles, não nossas.
-- **Morada e "aberto até às 19:00"** — da página Noona.
+- **Morada e horário semanal** — da página Noona (o horário vem em `opening_hours`,
+  segunda-feira primeiro, que é a ordem em que `site.json` o guarda).
+- **Programa de manutenção** — descrito pelo cliente (setembro de 2026): quem faz uma
+  Completa ou Detalhada tem desconto nas lavagens Simples durante 1 mês. Aparece no hero,
+  ao lado da recolha. O valor do desconto não foi dado, por isso o site não o indica.
 - **Fotografias e vídeos** — do álbum Google Photos partilhado pelo cliente
   ("Coches", julho 2026). Hero, banda CTA, cartões dos packs e o antes/depois são
-  fotos reais (BMW Série 4: empoeirado → espuma → acabado); a foto do Daniel na
+  fotos reais. Em setembro de 2026 o cliente acrescentou trabalhos ao álbum: o hero
+  passou a rodar entre os carros premium (Range Rover Sport, Porsche Macan, Mercedes
+  AMG Line, BMW Série 4, Tesla Model S, Mazda MX-5), com um recorte vertical próprio
+  para ecrãs em pé, e os cartões Simples (Mercedes AMG), Têxteis (MX-5), Peles
+  (Golf R) e Detalhada (Porsche Macan) foram trocados a pedido dele, para não ser tudo
+  o BMW. Porsche, Mercedes e
+  Tesla só existem como vídeos curtos no álbum, por isso a fonte é o frame de
+  1080×1920: no telemóvel mostram o carro inteiro, no desktop um pormenor (farol,
+  jante), porque é tudo o que um frame vertical dá em horizontal. O antes/depois continua a ser o BMW Série 4
+  (empoeirado → espuma → acabado); a foto do Daniel na
   secção Sobre é dele; os três reels da secção Trabalhos são vídeos deles
   transcodificados (Porsche Macan, espuma, jantes).
 - **Logótipo** — o vetor oficial (Inkscape, Rubik itálico + carro/gota/brilhos) está
@@ -45,13 +66,11 @@ Se os preços mudarem na Noona, o único ficheiro a tocar é
 
 ## O que falta (e o build avisa)
 
-Correr `npm run build` imprime a lista real, e é essa que manda. Hoje são duas:
+Correr `npm run build` imprime a lista real, e é essa que manda. Hoje é uma:
 
-1. **Horário semanal completo** — só se sabe "aberto até às 19:00", da Noona. O horário
-   completo alimentaria também o `LocalBusiness` no JSON-LD.
-2. **NIF** — o JSON-LD sai sem `vatID`.
+1. **NIF** — o JSON-LD sai sem `vatID`.
 
-Resolvidos desde então: o domínio (`garagemdobrilho.pt`, confirmado pelo cliente a
+Resolvidos desde então: o horário semanal (2026-09-28, da Noona), o domínio (`garagemdobrilho.pt`, confirmado pelo cliente a
 2026-07-30) e as coordenadas GPS, tiradas do próprio perfil do Google Business.
 
 Fora da lista do build, porque não é um campo em falta mas um enquadramento a melhorar:
@@ -96,8 +115,14 @@ src/
 - **Os vídeos são decorativos e obedecem ao visitante**: loops mudos que só tocam
   em viewport, nunca com `prefers-reduced-motion`, e um toque pausa — e a pausa
   é respeitada mesmo ao sair e voltar ao ecrã.
-- **Todos os CTAs apontam para a Noona** (`noona.pt/garagemdobrilho/book`) — o site
-  é a camada de persuasão; a agenda deles continua a ser a fonte de verdade.
+- **A marcação faz-se dentro do site.** Todos os botões "Marcar" levam à secção
+  `#marcar`, onde está a agenda da Noona num iframe (código de embed dado pelo cliente,
+  plano pago). O iframe é `loading="lazy"`, por isso quem nunca lá chega não faz um
+  único pedido à Noona; o CSP admite só `frame-src https://noona.pt`. A agenda deles
+  continua a ser a fonte de verdade, e o link direto fica no rodapé e na própria secção.
+- **O hero roda entre fotos de trabalhos.** A primeira está no HTML (é a imagem LCP);
+  as outras vêm num `<template>` que só entra depois do `load`. Pára fora do ecrã, com o
+  separador escondido, com o botão de pausa, e nunca corre com `prefers-reduced-motion`.
 - **Animações**: uma ideia só — *luz a passar sobre uma superfície*. Nada gira nem
   salta; o negócio vende reflexos, por isso o movimento são reflexos. Inclui parallax
   do hero, realce que segue o cursor nos cartões, wipe dos títulos, barra de leitura,
@@ -124,9 +149,10 @@ o `_headers` incluído já traz cache imutável para assets e CSP.
 
 ## Medição dos cliques de marcação
 
-A marcação completa-se na Noona, noutro domínio, por isso o site não consegue ver a sua
-própria conversão. O que consegue ver é o clique que sai, e é isso que `functions/e.js`
-regista: uma linha por clique, com data e qual o botão. **Nada que identifique alguém** —
+A marcação completa-se na agenda da Noona, embebida mas noutro domínio, por isso o site
+não consegue ver a sua própria conversão. O que consegue ver é o clique num botão
+"Marcar" (que leva à agenda) ou num link direto para a Noona, e é isso que
+`functions/e.js` regista: uma linha por clique, com data e qual o botão. **Nada que identifique alguém** —
 sem IP, sem user agent, sem cookie — logo não há consentimento a pedir.
 
 Sem base de dados ligada o site funciona na mesma: a função responde 204 e a contagem é a

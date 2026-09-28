@@ -17,6 +17,7 @@
 
   "contact": {
     "booking": "https://noona.pt/garagemdobrilho/book",
+    "bookingEmbed": "https://noona.pt/garagemdobrilho/book?iframe=true&showCancelButton=true",
     "profile": "https://noona.pt/garagemdobrilho",
     "instagram": "https://www.instagram.com/garagemdobrilho_pt/",
     "instagramHandle": "@garagemdobrilho_pt",
@@ -26,16 +27,23 @@
     "whatsapp": "https://wa.me/351960139151",
     "email": null,
     "address": {
-      "street": "R. Sociedade Recreativa 1 Maio 205",
-      "postalCode": "2430-177",
+      "street": "R. da Paz 6A, Picassinos",
+      "postalCode": "2430-449",
       "locality": "Marinha Grande",
       "region": "Leiria",
       "country": "PT",
-      "maps": "https://maps.app.goo.gl/BTCgPpHSY5GYQiUv7"
+      "maps": "https://www.google.com/maps/search/?api=1&query=Garagem%20do%20Brilho%2C%20R.%20da%20Paz%206A%2C%202430-449%20Marinha%20Grande&query_place_id=ChIJnYRBGwUMIg0Ry418PaUc5ZM"
     },
-    "geo": { "lat": 39.7289003, "lng": -8.9232929 },
-    "hours": null,
-    "closesAt": "19:00"
+    "geo": { "lat": 39.7290325, "lng": -8.9159102 },
+    "hours": [
+      { "opens": "08:00", "closes": "19:00" },
+      { "opens": "08:00", "closes": "19:00" },
+      { "opens": "08:00", "closes": "17:00" },
+      { "opens": "08:00", "closes": "19:00" },
+      { "opens": "08:00", "closes": "19:00" },
+      { "opens": "08:00", "closes": "12:00" },
+      null
+    ]
   },
 
   "serviceArea": [
@@ -81,9 +89,9 @@
       "icon": "droplet",
       "featured": false,
       "tiers": {
-        "citadino": { "price": 25, "minutes": 150 },
-        "familiar": { "price": 25, "minutes": 150 },
-        "suv": { "price": 35, "minutes": 240 }
+        "citadino": { "price": 35, "minutes": 180 },
+        "familiar": { "price": 35, "minutes": 180 },
+        "suv": { "price": 45, "minutes": 240 }
       },
       "includes": [
         "Lavagem exterior",
@@ -109,9 +117,9 @@
       "icon": "sparkles",
       "featured": true,
       "tiers": {
-        "citadino": { "price": 60, "minutes": 300 },
-        "familiar": { "price": 70, "minutes": 330 },
-        "suv": { "price": 80, "minutes": 360 }
+        "citadino": { "price": 80, "minutes": 300 },
+        "familiar": { "price": 90, "minutes": 330 },
+        "suv": { "price": 110, "minutes": 360 }
       },
       "includes": [
         "Lavagem exterior",
@@ -132,9 +140,9 @@
       "icon": "seat",
       "featured": false,
       "tiers": {
-        "citadino": { "price": 65, "minutes": 300 },
-        "familiar": { "price": 75, "minutes": 330 },
-        "suv": { "price": 90, "minutes": 360 }
+        "citadino": { "price": 85, "minutes": 300 },
+        "familiar": { "price": 95, "minutes": 330 },
+        "suv": { "price": 120, "minutes": 360 }
       },
       "includes": [
         "Lavagem exterior",
@@ -155,9 +163,9 @@
       "icon": "shieldShine",
       "featured": false,
       "tiers": {
-        "citadino": { "price": 130, "minutes": 480 },
-        "familiar": { "price": 150, "minutes": 480 },
-        "suv": { "price": 200, "minutes": 480 }
+        "citadino": { "price": 170, "minutes": 480 },
+        "familiar": { "price": 200, "minutes": 480 },
+        "suv": { "price": 240, "minutes": 480 }
       },
       "includes": [
         "Lavagem exterior",
@@ -170,22 +178,7 @@
         "Abrilhantador pneus",
         "Descontaminação de pintura",
         "Proteção cera"
-      ],
-      "includesOverride": {
-        "familiar": [
-          "Lavagem exterior",
-          "Lavagem jantes",
-          "Limpeza vidros",
-          "Aspiração interior",
-          "Limpeza a vapor",
-          "Lavagem das peles e tapetes",
-          "Hidratação das peles",
-          "Abrilhantador pneus",
-          "Descontaminação de pintura",
-          "Polimento (se necessário)",
-          "Proteção cera"
-        ]
-      }
+      ]
     }
   ],
 
@@ -194,9 +187,9 @@
       "id": "interior",
       "name": "Limpeza Interior",
       "minutes": 75,
-      "priceFrom": 15,
-      "priceTo": 20,
-      "note": "Aspiração, limpeza tablier, consola central e limpeza dos vidros (XL: 20€)",
+      "priceFrom": 20,
+      "priceTo": 25,
+      "note": "Aspiração, limpeza tablier, consola central e limpeza dos vidros. (Citadino e Familiar: 20€, SUV & XL: 25€)",
       "icon": "vacuum"
     },
     {
@@ -204,17 +197,17 @@
       "name": "Lavagem Exterior",
       "minutes": 60,
       "priceFrom": 15,
-      "priceTo": 20,
-      "note": "Lavagem exterior com TurtleWax®, jantes e brilho para pneus. (SUV e XL: 18€)",
+      "priceTo": 15,
+      "note": "Lavagem exterior com TurtleWax®, jantes e brilho para pneus.",
       "icon": "droplet"
     },
     {
       "id": "estofos",
       "name": "Estofos (Bancos e/ou Alcatifa)",
-      "minutes": 120,
-      "priceFrom": 50,
-      "priceTo": 70,
-      "note": "Lavagem e higienização dos estofos. (Valores: Citadino 50€, Sedan 60€, SUV 70€)",
+      "minutes": 240,
+      "priceFrom": 60,
+      "priceTo": 100,
+      "note": "Lavagem e higienização dos estofos. (Tecido / pele: Citadino 60€ / 65€, Familiar 70€ / 75€, SUV 90€ / 100€)",
       "icon": "seat"
     },
     {
@@ -225,6 +218,15 @@
       "priceTo": 20,
       "note": "Lavagem, descontaminação e proteção do compartimento do motor",
       "icon": "engine"
+    },
+    {
+      "id": "detalhe-exterior",
+      "name": "Detalhe Exterior: Descontaminação & Proteção",
+      "minutes": 240,
+      "priceFrom": 90,
+      "priceTo": 120,
+      "note": "Lavagem detalhada do exterior, descontaminação química e física da pintura e cera sintética, com proteção até 6 meses. (Citadino 90€, Familiar 100€, SUV 120€)",
+      "icon": "shieldShine"
     }
   ],
 
@@ -272,14 +274,7 @@
     ]
   },
 
-  "voucher": {
-    "name": "3 Lavagens + 1 Grátis",
-    "kind": "Voucher da série · 4 sessões",
-    "priceBefore": 100,
-    "price": 75,
-    "savePercent": 25,
-    "url": "https://noona.pt/garagemdobrilho/vouchers/dUr8q6nWueLSU24hyAeFFSGo?source=Company"
-  },
+  "voucher": null,
 
   "images": {
     "hero": null,

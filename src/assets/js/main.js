@@ -60,15 +60,32 @@
     sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:80vh;pointer-events:none';
     document.body.prepend(sentinel);
 
+    // The sticky booking bar appears once the hero's CTA has left the screen, and steps
+    // aside again over the booking section: there it would only cover the bottom of the
+    // calendar with a button that points at the calendar.
+    let pastHero = false;
+    let atBooking = false;
+    const syncBar = () => bar && bar.classList.toggle('is-shown', pastHero && !atBooking);
+
     new IntersectionObserver(
       ([e]) => {
         header.classList.toggle('is-stuck', !e.isIntersecting);
-        // The sticky booking bar appears at the same moment, for the same reason: the
-        // hero's CTA has just left the screen.
-        if (bar) bar.classList.toggle('is-shown', !e.isIntersecting);
+        pastHero = !e.isIntersecting;
+        syncBar();
       },
       { threshold: 0 }
     ).observe(sentinel);
+
+    const booking = q('#marcar');
+    if (bar && booking) {
+      new IntersectionObserver(
+        ([e]) => {
+          atBooking = e.isIntersecting;
+          syncBar();
+        },
+        { threshold: 0 }
+      ).observe(booking);
+    }
   }
 
   /* ------------------------------------------------------------------ *
@@ -439,6 +456,90 @@
   }
 
   /* ------------------------------------------------------------------ *
+   * Hero — rotating photographs
+   * --------------------------------------------------------------------
+   * The first photo is in the HTML and is the page's LCP image; the others wait in a
+   * <template> and are only added once the page has finished loading, so they never
+   * compete with it. A slide joins the rotation only after its image has decoded — a
+   * crossfade onto a half-loaded picture looks like a glitch. The rotation runs only
+   * while the hero is on screen and the tab is visible, never under reduced motion, and
+   * the button stops it.
+   * ------------------------------------------------------------------ */
+
+  const heroSlides = q('[data-hero-slides]');
+  const heroPause = q('[data-hero-pause]');
+
+  if (heroSlides && !reduced.matches) {
+    const media = heroSlides.parentElement;
+    const HOLD = 4000;
+    const FADE = 1200; // the CSS opacity transition on .hero__media > picture
+
+    const start = () => {
+      media.append(heroSlides.content.cloneNode(true));
+      heroSlides.remove();
+
+      const slides = qa(':scope > picture', media);
+      const ready = new Set([slides[0]]);
+      for (const pic of slides.slice(1)) {
+        const img = q('img', pic);
+        (img.decode ? img.decode() : Promise.resolve()).then(
+          () => ready.add(pic),
+          () => {} // a slide that fails to load just never joins
+        );
+      }
+
+      let current = 0;
+      let timer = 0;
+      let paused = false;
+      let onScreen = true;
+
+      const next = () => {
+        let n = current;
+        do n = (n + 1) % slides.length;
+        while (!ready.has(slides[n]) && n !== current);
+        if (n === current) return;
+
+        // Every later slide sits above the first, and a later slide above an earlier
+        // one. So the incoming slide fades in on top, and the outgoing one is dropped
+        // only once it is fully covered; returning to the first just fades the top away.
+        const prev = slides[current];
+        if (n > 0) slides[n].classList.add('is-active');
+        if (current > 0) {
+          if (n === 0) prev.classList.remove('is-active');
+          else setTimeout(() => prev.classList.remove('is-active'), FADE);
+        }
+        current = n;
+      };
+
+      const run = () => {
+        clearInterval(timer);
+        timer = 0;
+        if (!paused && onScreen && !document.hidden) timer = setInterval(next, HOLD);
+      };
+
+      new IntersectionObserver(([e]) => {
+        onScreen = e.isIntersecting;
+        run();
+      }).observe(media.closest('.hero'));
+      document.addEventListener('visibilitychange', run);
+
+      if (heroPause) {
+        heroPause.hidden = false;
+        heroPause.addEventListener('click', () => {
+          paused = !paused;
+          heroPause.setAttribute('aria-pressed', String(paused));
+          run();
+        });
+      }
+
+      run();
+    };
+
+    if (document.readyState === 'complete') start();
+    else addEventListener('load', start, { once: true });
+  }
+
+  /* ------------------------------------------------------------------ *
    * Card highlight follows the pointer
    * --------------------------------------------------------------------
    * The gradient position is a CSS variable, so the handler only writes two custom
@@ -610,9 +711,10 @@
   /* ------------------------------------------------------------------ *
    * Booking clicks
    * ------------------------------------------------------------------ *
-   * The booking happens on noona.pt, so the site cannot see its own conversion. The
-   * click that leaves for Noona is the closest thing it can see, and counting those is
-   * the difference between knowing the site works and assuming it.
+   * The booking happens inside the embedded Noona calendar, on another origin, so the
+   * site cannot see its own conversion. The closest thing it can see is the click on a
+   * "Marcar" button (which jumps to the calendar) or on a direct Noona link, and
+   * counting those is the difference between knowing the site works and assuming it.
    *
    * sendBeacon, not fetch: the browser hands the request to the OS and lets the page
    * navigate away immediately, so nothing is delayed and nothing is lost to the unload.
@@ -622,7 +724,7 @@
   function trackBookingClicks() {
     if (!navigator.sendBeacon) return;
 
-    const links = qa('a[href*="noona.pt"]');
+    const links = qa('a[href*="noona.pt"], a[href="#marcar"]');
     if (!links.length) return;
 
     // The hero's id is "top" and the packs section holds five buttons; neither name
