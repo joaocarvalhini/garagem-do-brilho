@@ -217,6 +217,9 @@
     "pickupLabel": "Recolha e entrega",
     "pickupValue": "Incluídas, sempre que precisar",
     "pickupSub": "Combinamos o local e a hora na marcação ou por WhatsApp.",
+    "loyaltyLabel": "Programa de manutenção",
+    "loyaltyValue": "Lavagens Simples com desconto durante 1 mês",
+    "loyaltySub": "Para quem faz uma Lavagem Completa ou uma Detalhada.",
     "directions": "Abrir no Google Maps",
     "areaLabel": "Servimos sobretudo",
     "areaNote": "Marinha Grande e arredores."

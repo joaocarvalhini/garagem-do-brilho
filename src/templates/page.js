@@ -859,6 +859,14 @@ function contact({ t, site }) {
             <p class="info__sub">${esc(t.contact.pickupSub)}</p>
           </div>
         </div>
+        <div class="info__row info__row--feature">
+          <span class="info__icon">${icon('ticket')}</span>
+          <div>
+            <p class="info__k">${esc(t.contact.loyaltyLabel)}</p>
+            <p class="info__v"><strong>${esc(t.contact.loyaltyValue)}</strong></p>
+            <p class="info__sub">${esc(t.contact.loyaltySub)}</p>
+          </div>
+        </div>
         <div class="info__row">
           <span class="info__icon">${icon('mapPin')}</span>
           <div>
