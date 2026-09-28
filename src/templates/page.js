@@ -9,7 +9,25 @@
  */
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { icon } = require('../lib/icons.js');
+
+/**
+ * /assets/img/* is served immutable for a year (scripts/build.js _headers), so a photo
+ * replaced under the same filename would never reach anyone who — or any Cloudflare
+ * edge that — already cached the old one. This happened in Sept 2026: new pack photos
+ * shipped and the CDN kept serving week-old ones. Every image URL therefore carries a
+ * hash of its bytes, the same way styles.css and main.js carry ?v=.
+ */
+const IMG_DIR = path.join(__dirname, '..', 'assets', 'img');
+const imgHashes = new Map();
+const imgUrl = (file) => {
+  if (!imgHashes.has(file)) {
+    const bytes = fs.readFileSync(path.join(IMG_DIR, file));
+    imgHashes.set(file, crypto.createHash('sha256').update(bytes).digest('hex').slice(0, 8));
+  }
+  return `/assets/img/${file}?v=${imgHashes.get(file)}`;
+};
 
 /** Reels present in src/assets/video/ — the template only writes cards for videos
  * that actually exist, so a missing transcode never ships a broken <video>. */
@@ -84,7 +102,7 @@ function picture(name, spec, { lqip, alt, sizes, eager = false, lazy = true, cla
   if (!lqip[name]) return null;
   const widths = spec.widths;
   const srcset = (fmt, set = name, ws = widths) =>
-    ws.map((w) => `/assets/img/${set}-${w}.${fmt} ${w}w`).join(', ');
+    ws.map((w) => `${imgUrl(`${set}-${w}.${fmt}`)} ${w}w`).join(', ');
   const largest = widths[widths.length - 1];
   const loadAttrs = eager
     ? 'fetchpriority="high"'
@@ -105,7 +123,7 @@ function picture(name, spec, { lqip, alt, sizes, eager = false, lazy = true, cla
     ${portrait}
     <source type="image/avif" srcset="${srcset('avif')}" sizes="${sizes}">
     <source type="image/webp" srcset="${srcset('webp')}" sizes="${sizes}">
-    <img src="/assets/img/${name}-${largest}.webp" alt="${esc(alt)}"
+    <img src="${imgUrl(`${name}-${largest}.webp`)}" alt="${esc(alt)}"
       width="${largest}" height="${Math.round(largest / spec.ar)}"
       ${loadAttrs}
       style="background-image:url(${lqip[name]});background-size:cover">
