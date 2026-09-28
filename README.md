@@ -37,9 +37,11 @@ atualizado a 2026-09-28 (nova morada, novos preços):
   "Devolvemos o aspeto de novo ao seu carro" são frases deles, não nossas.
 - **Morada e horário semanal** — da página Noona (o horário vem em `opening_hours`,
   segunda-feira primeiro, que é a ordem em que `site.json` o guarda).
-- **Programa de manutenção** — descrito pelo cliente (setembro de 2026): quem faz uma
-  Completa ou Detalhada tem desconto nas lavagens Simples durante 1 mês. Aparece no hero,
-  ao lado da recolha. O valor do desconto não foi dado, por isso o site não o indica.
+- **Plano de manutenção mensal** — texto do cliente (setembro de 2026): depois de uma
+  Completa ou Detalhada, a Lavagem Simples tem preço exclusivo; o desconto renova-se a cada
+  mês, e passados 30 dias o carro é reavaliado. Explicado por inteiro nos Serviços, logo a
+  seguir aos preços (é o argumento para subir de pack); em resumo no hero e nos Contactos;
+  as regras também na FAQ. O valor do desconto nunca foi dado, por isso o site não o indica.
 - **Fotografias e vídeos** — do álbum Google Photos partilhado pelo cliente
   ("Coches", julho 2026). Hero, banda CTA, cartões dos packs e o antes/depois são
   fotos reais. Em setembro de 2026 o cliente acrescentou trabalhos ao álbum: o hero

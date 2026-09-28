@@ -374,13 +374,14 @@ function hero({ t, site, lqip }) {
           <span class="hero__perk-text">${esc(t.hero.pickup)}</span>
         </span>
       </p>
-      <p class="hero__perk">
+      <a class="hero__perk hero__perk--link" href="#plano">
         <span class="hero__perk-icon">${icon('ticket')}</span>
         <span>
           <strong class="hero__perk-title">${esc(t.hero.loyaltyStrong)}</strong>
           <span class="hero__perk-text">${esc(t.hero.loyalty)}</span>
         </span>
-      </p>
+        <span class="hero__perk-go" aria-hidden="true">${icon('arrowRight')}</span>
+      </a>
     </div>
   </div>
   <span class="hero__scroll" aria-hidden="true">${esc(t.hero.scroll)}</span>
@@ -472,8 +473,47 @@ function packs({ t, site, lqip }) {
     <div class="packs__cta" data-reveal>
       <a class="btn btn--primary btn--lg" href="${BOOK}">${esc(t.pricing.cta)}${icon('arrowRight')}</a>
     </div>
+    ${plan({ t })}
   </div>
 </section>`;
+}
+
+/**
+ * The monthly maintenance plan, right under the pack prices: it is the reason to pick
+ * a Completa or Detalhada over a Simples, so it belongs where that choice is made.
+ * Same panel as the voucher (which is off Noona for now); three steps instead of price
+ * figures, because the discount amount has never been published.
+ */
+function plan({ t }) {
+  const p = t.plan;
+  if (!p) return '';
+  // #plano is the target of the hero's plan chip. It sits on a plain wrapper, not on
+  // the panel: the panel's reveal starts translated 1.5rem down, the browser aims the
+  // jump at that shifted box, and the header then covered the panel's top edge.
+  return `<div id="plano" style="margin-top:var(--s-8)"><div class="voucher plan" data-reveal>
+      <div>
+        <p class="eyebrow">${esc(p.eyebrow)}</p>
+        <h3 class="voucher__title">${esc(p.title)}</h3>
+        <p class="voucher__lead">${esc(p.lead)}</p>
+        <div class="btn-row voucher__actions">
+          <a class="btn btn--primary" href="${BOOK}">${esc(p.cta)}${icon('arrowRight')}</a>
+        </div>
+        <p class="voucher__fine">${esc(p.note)}</p>
+      </div>
+      <ol class="plan__steps">
+        ${p.steps
+      .map(
+        (s) => `<li class="plan__step">
+          <span class="plan__n" aria-hidden="true"></span>
+          <span>
+            <strong class="plan__title">${esc(s.title)}</strong>
+            <span class="plan__body">${esc(s.body)}</span>
+          </span>
+        </li>`
+      )
+      .join('\n        ')}
+      </ol>
+    </div></div>`;
 }
 
 function extras({ t, site }) {

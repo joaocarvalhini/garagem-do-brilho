@@ -28,8 +28,8 @@
     "scroll": "Ver mais",
     "pickupStrong": "Recolha e entrega incluídas",
     "pickup": "Vamos buscar e entregamos o carro, sempre que precisar.",
-    "loyaltyStrong": "Programa de manutenção",
-    "loyalty": "Depois de uma Completa ou Detalhada, as lavagens Simples têm desconto durante 1 mês.",
+    "loyaltyStrong": "Plano de manutenção mensal",
+    "loyalty": "Preço exclusivo na Lavagem Simples depois de uma Completa ou Detalhada.",
     "imgAlt": "Carro após tratamento de detalhe na Garagem do Brilho",
     "slidesPause": "Pausar a troca de fotografias"
   },
@@ -59,6 +59,19 @@
     "colPrice": "Preço",
     "note": "Valores em euros, IVA incluído. Confirmados na página de marcação.",
     "cta": "Marcar agora"
+  },
+
+  "plan": {
+    "eyebrow": "Plano de manutenção mensal",
+    "title": "Brilho todos os meses, a preço exclusivo.",
+    "lead": "Depois de uma Lavagem Completa ou Detalhada, garanta um preço exclusivo na Lavagem Simples, mês após mês.",
+    "steps": [
+      { "title": "Faça uma Completa ou Detalhada", "body": "A lavagem de fundo que deixa o carro como novo." },
+      { "title": "Volte dentro de 30 dias", "body": "A Lavagem Simples de manutenção passa a ter preço exclusivo." },
+      { "title": "Repita todos os meses", "body": "O desconto renova-se automaticamente a cada lavagem." }
+    ],
+    "cta": "Marcar uma Completa",
+    "note": "*Para marcações depois dos 30 dias, o estado do carro é reavaliado antes de voltar ao plano."
   },
 
   "extras": {
@@ -178,6 +191,10 @@
         "a": "Pode. A lavagem do motor, os estofos e as restantes opções aparecem como complementos na marcação e podem ser adicionados ao pack que escolher, ou marcados isoladamente, em Personalizado."
       },
       {
+        "q": "Como funciona o plano de manutenção mensal?",
+        "a": "Depois de uma Lavagem Completa ou Detalhada, a Lavagem Simples passa a ter um preço exclusivo. Se voltar dentro de 30 dias, mantém esse preço, e o desconto renova-se automaticamente a cada mês. Se passarem mais de 30 dias desde a última lavagem, o estado do carro é reavaliado antes de voltar ao plano."
+      },
+      {
         "q": "Preciso de marcar antecipadamente?",
         "a": "Sim. Um trabalho de detalhe ocupa a garagem várias horas, por isso trabalhamos só com marcação. A agenda está online e mostra os horários realmente livres."
       }
@@ -217,9 +234,9 @@
     "pickupLabel": "Recolha e entrega",
     "pickupValue": "Incluídas, sempre que precisar",
     "pickupSub": "Combinamos o local e a hora na marcação ou por WhatsApp.",
-    "loyaltyLabel": "Programa de manutenção",
-    "loyaltyValue": "Lavagens Simples com desconto durante 1 mês",
-    "loyaltySub": "Para quem faz uma Lavagem Completa ou uma Detalhada.",
+    "loyaltyLabel": "Plano de manutenção mensal",
+    "loyaltyValue": "Preço exclusivo na Lavagem Simples",
+    "loyaltySub": "Depois de uma Lavagem Completa ou Detalhada. Renova-se todos os meses.",
     "directions": "Abrir no Google Maps",
     "areaLabel": "Servimos sobretudo",
     "areaNote": "Marinha Grande e arredores."

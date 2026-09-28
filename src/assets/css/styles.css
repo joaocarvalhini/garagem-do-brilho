@@ -898,6 +898,37 @@ p {
   text-align: left;
 }
 
+/* The plan chip is a link to the full explanation under the pack prices. The arrow is
+   what says "this goes somewhere"; it nudges right on hover, like the buttons do. */
+.hero__perk--link {
+  text-decoration: none;
+  transition:
+    border-color var(--d-fast) var(--ease-out),
+    background-color var(--d-fast) var(--ease-out);
+}
+
+.hero__perk--link:hover {
+  border-color: rgb(47 181 232 / 70%);
+}
+
+.hero__perk-go {
+  display: grid;
+  flex: none;
+  place-items: center;
+  margin-left: auto;
+  color: var(--azul-300, var(--accent));
+  transition: transform var(--d-fast) var(--ease-out);
+}
+
+.hero__perk-go svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.hero__perk--link:hover .hero__perk-go {
+  transform: translateX(3px);
+}
+
 /* Stacked rather than one running sentence. Inline, the detail wrapped onto a new line
    starting with a dash on a 375px screen, and the icon ended up floating against the
    middle of a four-line block. Two lines also give the promise a headline. */
@@ -1632,6 +1663,60 @@ p {
   margin-top: var(--s-3);
   color: var(--text-muted);
   font-size: var(--t-xs);
+}
+
+/* The maintenance plan reuses the voucher panel; where the voucher shows its price
+   figures, the plan shows how it works in three numbered steps. */
+.plan {
+  text-align: left;
+}
+
+.plan__steps {
+  display: grid;
+  gap: var(--s-4);
+  max-width: 26rem;
+  padding: 0;
+  list-style: none;
+  counter-reset: plan;
+}
+
+.plan__step {
+  display: flex;
+  gap: var(--s-4);
+  align-items: flex-start;
+  counter-increment: plan;
+}
+
+.plan__n {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid rgb(47 181 232 / 45%);
+  border-radius: var(--r-full);
+  background: rgb(47 181 232 / 12%);
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: var(--t-sm);
+  font-weight: 700;
+}
+
+.plan__n::before {
+  content: counter(plan);
+}
+
+.plan__title {
+  display: block;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.plan__body {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--text-muted);
+  font-size: var(--t-sm);
 }
 
 /* ==========================================================================
