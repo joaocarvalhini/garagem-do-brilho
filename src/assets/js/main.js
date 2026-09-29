@@ -430,11 +430,13 @@
         // 18% of scroll distance: enough to feel like depth, little enough that the
         // 1.06 scale on the media never exposes an edge.
         parallax.style.setProperty('--py', `${(y * 0.18).toFixed(1)}px`);
-        // Clamped, and paced to reach zero at ~87% of the hero — which is after the
-        // sticky booking bar has appeared (its sentinel is at 80vh). The hero's own
-        // CTA must never fade out while nothing has replaced it.
+        // The copy sits at the foot of the hero, so it stays readable for most of the
+        // scroll: hold full opacity for the first 30%, then ease out to reach zero at
+        // 90% — after the sticky booking bar has appeared (its sentinel is at 80vh).
+        // The hero's own CTA must never fade out while nothing has replaced it.
         if (heroInner) {
-          const o = Math.min(1, Math.max(0, 1 - p * 1.15));
+          const t = Math.min(1, Math.max(0, (p - 0.3) / 0.6));
+          const o = 1 - t * t * (3 - 2 * t);
           heroInner.style.setProperty('--ho', o.toFixed(3));
         }
       }
