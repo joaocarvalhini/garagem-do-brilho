@@ -196,8 +196,8 @@
       "id": "exterior",
       "name": "Lavagem Exterior",
       "minutes": 60,
-      "priceFrom": 15,
-      "priceTo": 15,
+      "priceFrom": 20,
+      "priceTo": 25,
       "note": "Lavagem exterior com TurtleWax®, jantes e brilho para pneus.",
       "icon": "droplet"
     },
